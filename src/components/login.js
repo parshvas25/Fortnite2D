@@ -33,6 +33,10 @@ function Login() {
         history.push('/registration');
     }
 
+    const toLogin = () => {
+        history.push('/pause');
+    }
+
         return (
            <div className="title">
             <h1>Fortnite 2D</h1>
@@ -55,7 +59,7 @@ function Login() {
             variant="outlined"
             />
             <ThemeProvider theme = {theme}>
-                <Button variant="contained" color="primary" fullWidth={true}>
+                <Button variant="contained" color="primary" fullWidth={true} onClick = {toLogin}>
                     Login
                 </Button>
                 &nbsp;
