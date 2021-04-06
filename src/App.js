@@ -5,7 +5,7 @@ import Pause from './components/Pause';
 import Registration from './components/registration';
 import React, {Component} from 'react';
 
-class App extends React.Component{
+class App extends Component{
 	constructor(){
 		super();
 		this.state = {

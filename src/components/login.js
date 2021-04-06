@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React from 'react';
 import { createMuiTheme, withStyles, makeStyles, ThemeProvider } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
@@ -27,15 +27,6 @@ const theme = createMuiTheme({
 });
 
 
-// function Login() {
-    // const history = useHistory();
-    // const toRegister = () => {
-    //     history.push('/registration');
-    // }
-
-    // const toLogin = () => {
-    //     history.push('/pause');
-    // }
 class Login extends React.Component{
     constructor(props){
         super(props);
