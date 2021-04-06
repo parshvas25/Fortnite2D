@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 import { createMuiTheme, withStyles, makeStyles, ThemeProvider } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
@@ -27,51 +27,56 @@ const theme = createMuiTheme({
 });
 
 
-function Login() {
-    const history = useHistory();
-    const toRegister = () => {
-        history.push('/registration');
-    }
+// function Login() {
+    // const history = useHistory();
+    // const toRegister = () => {
+    //     history.push('/registration');
+    // }
 
-    const toLogin = () => {
-        history.push('/pause');
+    // const toLogin = () => {
+    //     history.push('/pause');
+    // }
+class Login extends React.Component{
+    constructor(props){
+        super(props);
     }
-
+    render(){
         return (
-           <div className="title">
-            <h1>Fortnite 2D</h1>
-            <TextField
-            id="filled-full-width"
-            label="Username"
-            style={{margin:8}}
-            placeholder="Enter Username"
-            fullWidth={true}
-            margin="normal"
-            variant="outlined"
-            />
-            <TextField
-            id="filled-full-width"
-            label="Password"
-            style={{margin:8}}
-            placeholder="Enter Password"
-            fullWidth={true}
-            margin="normal"
-            variant="outlined"
-            />
-            <ThemeProvider theme = {theme}>
-                <Button variant="contained" color="primary" fullWidth={true} onClick = {toLogin}>
-                    Login
-                </Button>
-                &nbsp;
-                &nbsp;
-                &nbsp;
-                <Button variant="contained" color="primary" fullWidth={true} onClick={toRegister}>
-                    Register
-                </Button>
-            </ThemeProvider>
-           </div>
-
-
-        );
+            <div className="title">
+             <h1>Fortnite 2D</h1>
+             <TextField
+             id="filled-full-width"
+             label="Username"
+             style={{margin:8}}
+             placeholder="Enter Username"
+             fullWidth={true}
+             margin="normal"
+             variant="outlined"
+             />
+             <TextField
+             id="filled-full-width"
+             label="Password"
+             style={{margin:8}}
+             placeholder="Enter Password"
+             fullWidth={true}
+             margin="normal"
+             variant="outlined"
+             />
+             <ThemeProvider theme = {theme}>
+                 <Button onClick={this.props.loginHandler} variant="contained" color="primary" fullWidth={true}>
+                     Login
+                 </Button>
+                 &nbsp;
+                 &nbsp;
+                 &nbsp;
+                 <Button onClick={this.props.registrationHandler} variant="contained" color="primary" fullWidth={true}>
+                     Register
+                 </Button>
+             </ThemeProvider>
+            </div>
+         );
+    }
 }
+        
+// }
 export default Login;

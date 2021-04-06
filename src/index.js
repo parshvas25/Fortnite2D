@@ -11,7 +11,7 @@ import Registration from './components/registration';
 ReactDOM.render(
   <Router forceRefresh={true}>
     <div className="App">
-      <Routes/>
+      <App/>
     </div>
   </Router>,
   document.getElementById('root')

@@ -207,7 +207,7 @@ class Registration extends React.Component {
             <h2>{this.state.errors[this.state.errors.length -1]}</h2>     
               
             <ThemeProvider theme = {theme}>
-                <Button variant="contained" color="primary" fullWidth={true}>
+                <Button onClick={this.props.toLogin} variant="contained" color="primary" fullWidth={true}>
                     Register
                 </Button>
             </ThemeProvider>

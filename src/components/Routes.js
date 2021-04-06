@@ -12,7 +12,7 @@ export default class Routes extends React.Component {
         return (
             <Router history={history}>
                 <Switch>
-                    <Route path="/" exact component={GameWon}/>
+                    <Route path="/" exact component={Login}/>
                     <Route path="/registration" component={Registration}/>
                     <Route path="/pause" component={Pause}/>
                 </Switch>
