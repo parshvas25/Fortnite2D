@@ -23,7 +23,6 @@ const bodyParser = require('body-parser'); // we used this middleware to parse P
 var clients = {};
 var gameObj = new Game();
 var gameState = gameObj.serialize();
-console.log(gameState);
 gameState = JSON.stringify(gameState);
 
 var playerAction = {};
@@ -152,14 +151,11 @@ function removeActors(actorJson, world){
 			}
 		}
 	}
-	// actorJson["remove"] = {};
 	return world
 }
 
 var WebSocketServer = require('ws');
 const wss = new WebSocketServer.Server({port: 8005});
-
-console.log("SERVER", wss);
 
 wss.on('close', function() {
     console.log('disconnected');	

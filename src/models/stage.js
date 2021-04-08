@@ -64,10 +64,9 @@ export class Stage {
 
 		var position = new Pair(Math.floor(this.width/2), Math.floor(this.height/2));
         var velocity = new Pair(0,0);
-        var radius = 15; //saashu is the best PERIODT. SAVE THE BLOODY TURTLES.
+        var radius = 15; 
         var colour= colour;
         this.player = new Player(this, position, velocity, colour, radius, userName);
-		console.log('Game recieved: ', gamejson);
 		this.populateActors(gamejson);
 	}	
 
