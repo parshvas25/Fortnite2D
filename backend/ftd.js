@@ -182,9 +182,9 @@ wss.on('connection', function(ws) {
 		var gamejson = JSON.parse(game);
 		var worldJson = JSON.parse(gameState);
 		
-
 		if('addPlayer' in gamejson){
 			var newPlayer = gamejson['addPlayer'];
+			ws.userName = newPlayer.name;
 			playerAction[newPlayer.name] = [];
 			if('player' in worldJson){
 				worldJson['player'].push(newPlayer);
@@ -247,11 +247,24 @@ wss.on('connection', function(ws) {
 
 		wss.broadcast(gameState);
 	});
+
+	ws.on('close', function(code, reason){
+		console.log('disconnected');
+		var disconnectedUser = ws.userName;
+		var worldJson = JSON.parse(gameState);
+		var players = worldJson['player'];
+		for(var i = 0; i < players.length; i++){
+			if(players[i].name == disconnectedUser){
+				players.splice(i,1);
+			}
+		}
+		worldJson['player'] = players;
+		gameState = JSON.stringify(worldJson);
+		wss.broadcast(gameState);
+	});
 });
 
-// wss.on('disconnect', function(ws){
 
-// });
 
 // app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
