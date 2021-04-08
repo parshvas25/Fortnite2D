@@ -35,14 +35,14 @@ serverInterval=setInterval(function(){
 		for(var i = 0; i < bulletList.length; i++){
 			bulletList[i].x = bulletList[i].x + bulletList[i].xvelocity;
 			bulletList[i].y = bulletList[i].y + bulletList[i].yvelocity;
-			console.log(worldJson['player'][0]);
+			// console.log(worldJson['player'][0]);
 			var hitPlayer = playerHit(worldJson, worldJson['player'], bulletList[i].x, bulletList[i].y, bulletList[i].damage, bulletList[i].id);
 			if(hitPlayer){
 				collidedBulletIndex.push(i);
 			}
 			else{
 				var hitObstacle = obstacleHit(worldJson, worldJson['obstacle'], bulletList[i].x, bulletList[i].y, bulletList[i].damage, bulletList[i].id);
-				console.log("Obstacle return", hitObstacle);
+				// console.log("Obstacle return", hitObstacle);
 				if(hitObstacle){
 					collidedBulletIndex.push(i);
 				}
@@ -70,20 +70,19 @@ function updatePlayerAction(bulletObj){
 }
 
 function getBricks(numBricks, id, worldJson){
-	console.log('getBricks called');
 	var brickPlayer = "";
 	for(const key in playerAction){
 		for(var i = 0; i < playerAction[key].length; i++){
 			if(id == playerAction[key][i].id){
 				brickPlayer = key;
-				console.log("WHO DESTROYED: ", brickPlayer);
+				// console.log("WHO DESTROYED: ", brickPlayer);
 			}
 		}
 	}
 	var playerList = worldJson['player'];
 	for(var i = 0; i < playerList.length; i++){
 		if(playerList[i].name == brickPlayer){
-			console.log('Bricks added', numBricks);
+			// console.log('Bricks added', numBricks);
 			playerList[i].brick += numBricks;
 			break;
 		}
@@ -101,9 +100,11 @@ function playerHit(worldJson, playerList, x, y, damage, id){
 		(y + 5 > player.y - player.radius && y + 5 < player.y + player.radius))) {
 			player.playerHealth -= damage;
 			playerList[i] = player;
-			if(player.playerHealth < 0){
-				playerList.splice(i, 1);
-			}
+
+			// if(player.playerHealth < 0){
+			// 	playerList.splice(i, 1);
+			// }
+
 			worldJson['player'] = playerList;
 			gameState = JSON.stringify(worldJson);
 			return true;
@@ -127,7 +128,7 @@ function obstacleHit(worldJson, obsList, x, y, damage, id){
 					obstacle.health -= damage;
 					obsList[i] = obstacle;
 					if(obstacle.health < 0){
-						console.log('obstacle destroyed');
+						// console.log('obstacle destroyed');
 						var numBricksGained = Math.ceil((obstacle.height * obstacle.width)/5000);
 						getBricks(numBricksGained, id, worldJson);
 						obsList.splice(i, 1);
@@ -187,6 +188,19 @@ wss.on('connection', function(ws) {
 			}
 			gameState = JSON.stringify(worldJson);
 		}
+		else if('removePlayer' in gamejson){
+			console.log('player removed');
+			var remove = gamejson['removePlayer'];
+			var playerList = worldJson['player'];
+			for(var i = 0; i < playerList.length; i++){
+				if(playerList[i].name == remove.name){
+					playerList.splice(i,1);
+					break;
+				}
+			}
+			worldJson['player'] = playerList;
+			gameState = JSON.stringify(worldJson);
+		}
 		else{
 			var playerObj = gamejson['player'];
 
@@ -242,7 +256,7 @@ wss.on('connection', function(ws) {
 	});
 
 	ws.on('close', function(code, reason){
-		console.log('disconnected');
+		console.log(ws.userName, ' disconnected');
 		var disconnectedUser = ws.userName;
 		var worldJson = JSON.parse(gameState);
 		var players = worldJson['player'];

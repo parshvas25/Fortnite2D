@@ -79,13 +79,31 @@ export function setupGame(canvas){
         document.addEventListener('mouseup', placeBlock);
 }
 export function startGame(){
-        stage.step(); 
-        stage.draw();
-        window.appComponent.setInventory(stage.player.inventory);
+        if(stage.player == null){
+                clearInterval(webSocketInterval);
+                var removePlayer = {
+                        'removePlayer' : stage.deadPlayer
+                }
+                socket.send(JSON.stringify(removePlayer))
+                window.appComponent.showGameOver();
+                stopGame();
+                socket.close();
+        }
+        else{   
+                stage.step(); 
+                stage.draw();
+                window.appComponent.setInventory(stage.player.inventory);
+                gameID = requestAnimationFrame(startGame);
+        }
+        
         // debug();
-        gameID = requestAnimationFrame(startGame);
+        // gameID = requestAnimationFrame(startGame);
 }
 
+export function stopGame(){
+        console.log('stopGame called');
+        window.cancelAnimationFrame(gameID);
+}
 
 
 // function mouseMove(e) {

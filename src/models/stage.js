@@ -44,6 +44,7 @@ export class Stage {
 		this.gameState = "play";
 		this.actors=[]; // all actors on this stage (monsters, player, boxes, ...)
 		this.player=null; // a special actor, the player
+		this.deadPlayer = null;
 		this.score = 0;
 		canvas.width = window.innerWidth;
 		canvas.height = window.innerHeight;
@@ -186,6 +187,7 @@ export class Stage {
 	}
 
 	populatePlayer(playerList){
+		var playerAlive = true;
 		for(var i = 0; i< playerList.length; i++){
 			if(playerList[i].name != this.user){
 				var otherPlayer = playerList[i];
@@ -195,7 +197,15 @@ export class Stage {
 				this.addActor(otherPlayerActor);
 			}
 			else{
+				console.log('player found');
+				console.log("New player health: ", playerList[i].playerHealth);
 				this.player.playerHealth = playerList[i].playerHealth;
+				if(this.player.playerHealth < 0){
+					playerAlive = false;
+					this.deadPlayer = this.player;
+					this.removePlayer();
+					break;
+				}
 				if(this.player.inventory['brick'] < playerList[i].brick){
 					console.log("Updated to", playerList[i].brick)
 					this.player.inventory['brick'] = playerList[i].brick;
