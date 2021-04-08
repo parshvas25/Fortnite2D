@@ -156,9 +156,6 @@ function removeActors(actorJson, world){
 	return world
 }
 
-// var WebSocketServer = require('ws').Server
-//    ,wss = new WebSocketServer({port: 8005});
-
 var WebSocketServer = require('ws');
 const wss = new WebSocketServer.Server({port: 8005});
 

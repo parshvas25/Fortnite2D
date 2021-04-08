@@ -4,7 +4,7 @@ import Login from './components/login';
 import Pause from './components/Pause';
 import Registration from './components/registration';
 import GameView from './components/GameView';
-import {setupGame} from './controller/controller';
+import Inventory from './components/Inventory';
 import {initSocket} from './controller/controller';
 
 
@@ -54,7 +54,6 @@ class App extends Component{
 	}
 	
 	showGame(){
-		console.log('showgame');
 		this.setState({
 			showLogin: false,
 			showPause: false,
@@ -82,6 +81,7 @@ class App extends Component{
 				/>
 				}
 				{this.state.showGame && <GameView/>}
+				{this.state.showGame && <Inventory/>}
 			</div>
 		)
 	}
