@@ -130,7 +130,6 @@ export class Stage {
 	}
 
 	populateGuns(gunList){
-		console.log("Gun");
 		for(var i = 0 ; i < gunList.length; i++){
 			var gun = gunList[i];
 			if(gun.bulletVelocity == 30){
@@ -146,7 +145,6 @@ export class Stage {
 	}
 
 	populateAmmo(ammoList){
-		console.log("Ammo");
 		for(var i = 0 ; i < ammoList.length; i++){
 			var ammo = ammoList[i];
 			var ammoPos = new Pair(ammo.x, ammo.y);
@@ -156,7 +154,6 @@ export class Stage {
 	}
 
 	populateHealth(healthList){
-		console.log("Health");
 		for(var i = 0 ; i < healthList.length; i++){
 			var health = healthList[i];
 			var healthPos =  new Pair(health.x, health.y);
@@ -181,7 +178,6 @@ export class Stage {
 	}
 
 	populateObstacle(obsList){
-		console.log("Obstacle");
 		for(var i = 0; i < obsList.length; i++){
 			var obs = obsList[i];
 			var obsPos = new Pair(obs.x, obs.y);
@@ -191,7 +187,6 @@ export class Stage {
 	}
 
 	populatePlayer(playerList){
-		console.log("Player");
 		for(var i = 0; i< playerList.length; i++){
 			if(playerList[i].name != this.user){
 				var otherPlayer = playerList[i];
@@ -213,7 +208,6 @@ export class Stage {
 	}
 
 	populateBullet(bulletList){
-		console.log("Bullet");
 		for(var i = 0; i < bulletList.length; i++){
 			var bullet = bulletList[i];
 			var bulletPos = new Pair(bullet.x, bullet.y);

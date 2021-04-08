@@ -1,4 +1,5 @@
 import {Stage, Pair} from '../models/stage';
+import {setInventory} from '../App';
 
 var stage = null;
 var view = null;
@@ -80,6 +81,7 @@ export function setupGame(canvas){
 export function startGame(){
         stage.step(); 
         stage.draw();
+        window.appComponent.setInventory(stage.player.inventory);
         // debug();
         gameID = requestAnimationFrame(startGame);
 }

@@ -7,8 +7,6 @@ import GameView from './components/GameView';
 import Inventory from './components/Inventory';
 import {initSocket} from './controller/controller';
 
-
-
 class App extends Component{
 	constructor(){
 		super();
@@ -17,11 +15,21 @@ class App extends Component{
 			showRegistration : false,
 			showPause : false,
 			showGame : false,
+			inventory : null,
 		}
 		this.loginSuccess = this.showPause.bind(this);
 		this.toRegistration = this.showRegistration.bind(this);
 		this.registrationSuccess = this.showLogin.bind(this);
 		this.playGame = this.showGame.bind(this);
+		window.appComponent = this
+	}
+
+	setInventory(newInventory) {
+		console.log('setinventory triggered');
+		this.setState({
+			inventory: newInventory
+		})
+		console.log('Inventory is now: ', this.state.inventory);
 	}
 
 	showPause() {
@@ -35,7 +43,6 @@ class App extends Component{
 	}
 
 	showRegistration() {
-		console.log('reg called');
 		this.setState({
 			showLogin: false,
 			showPause: false,
@@ -66,22 +73,23 @@ class App extends Component{
 		return (
 			<div>
 				{this.state.showLogin && 
-				<Login
-					loginHandler={this.loginSuccess}
-					registrationHandler={this.toRegistration}
-				/>}
+					<Login
+						loginHandler={this.loginSuccess}
+						registrationHandler={this.toRegistration}
+					/>
+				}
 				{this.state.showRegistration && 
-				<Registration
-					toLogin={this.registrationSuccess}
-				/>
+					<Registration
+						toLogin={this.registrationSuccess}
+					/>
 				}
 				{this.state.showPause && 
-				<Pause
-					toGame={this.playGame}
-				/>
+					<Pause
+						toGame={this.playGame}
+					/>
 				}
 				{this.state.showGame && <GameView/>}
-				{this.state.showGame && <Inventory/>}
+				{this.state.showGame && <Inventory inventory={this.state.inventory}/>}
 			</div>
 		)
 	}
