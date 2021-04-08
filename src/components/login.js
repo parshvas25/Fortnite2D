@@ -5,7 +5,6 @@ import Button from '@material-ui/core/Button';
 import {green} from '@material-ui/core/colors';
 import {Redirect} from 'react-router-dom';
 import {useHistory} from "react-router-dom";
-// import history from './history';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -31,6 +30,7 @@ class Login extends React.Component{
     constructor(props){
         super(props);
     }
+
     render(){
         return (
             <div className="title">

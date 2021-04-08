@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {makeStyles} from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
@@ -9,6 +9,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormLabel from '@material-ui/core/FormLabel';
 import Button from '@material-ui/core/Button';
+import {initSocket} from '../controller/controller';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -28,8 +29,8 @@ const useStyles = makeStyles((theme) => ({
     }
   }));
 
-export default function Pause() {
-        const [isVisible, toggleVisible] = useState(true);
+  
+export default function Pause(props) {
         const [device, changeDevice] = useState('Computer');
 
         const classes = useStyles();
@@ -37,8 +38,7 @@ export default function Pause() {
         const handleChange = (event) => {
             changeDevice(event.target.value);
         }
-
-           
+        
         return (
             <div className = {classes.root}>
                 <Grid container spacing={3}>
@@ -93,10 +93,9 @@ export default function Pause() {
 
                         </Paper>
                     </Grid>
-                    <Button variant="contained" color="primary" fullWidth={true}>
+                    <Button onClick={props.toGame} variant="contained" color="primary" fullWidth={true}>
                     Play
                 </Button>
-                    
                 </Grid>
             </div>
         );

@@ -1,5 +1,5 @@
 var port = 8000; 
-var websocket =  8001;
+// var websocket =  8001;
 var serverInterval;
 
 var express = require('express');
@@ -20,11 +20,10 @@ const pool = new Pool({
 
 const bodyParser = require('body-parser'); // we used this middleware to parse POST bodies
 
-function isObject(o){ return typeof o === 'object' && o !== null; }
-function isNaturalNumber(value) { return /^\d+$/.test(value); }
-
+var clients = {};
 var gameObj = new Game();
 var gameState = gameObj.serialize();
+console.log(gameState);
 gameState = JSON.stringify(gameState);
 
 var playerAction = {};
@@ -157,8 +156,13 @@ function removeActors(actorJson, world){
 	return world
 }
 
-var WebSocketServer = require('ws').Server
-   ,wss = new WebSocketServer({port: websocket});
+// var WebSocketServer = require('ws').Server
+//    ,wss = new WebSocketServer({port: 8005});
+
+var WebSocketServer = require('ws');
+const wss = new WebSocketServer.Server({port: 8005});
+
+console.log("SERVER", wss);
 
 wss.on('close', function() {
     console.log('disconnected');	
@@ -171,6 +175,7 @@ wss.broadcast = function(gameState){
 }
 
 wss.on('connection', function(ws) {
+	console.log("connected");
 	ws.send(gameState);
 
 	ws.on('message', function(game) {
@@ -243,6 +248,10 @@ wss.on('connection', function(ws) {
 		wss.broadcast(gameState);
 	});
 });
+
+// wss.on('disconnect', function(ws){
+
+// });
 
 // app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
