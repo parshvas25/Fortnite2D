@@ -96,6 +96,13 @@ export default function Pause(props) {
                     <Button onClick={props.toGame} variant="contained" color="primary" fullWidth={true}>
                     Play
                 </Button>
+                &nbsp;
+                &nbsp;
+                &nbsp;
+                &nbsp;
+                <Button onClick={props.toUpdate} variant="contained" color="primary" fullWidth={true}>
+                    Update Profile
+                </Button>
                 </Grid>
             </div>
         );

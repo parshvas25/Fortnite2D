@@ -25,15 +25,15 @@ var gameID;
 var actions = [];
 var socketSend = {};
 var dev;
-
+var url = `http://${window.location.hostname}:8000`;
 function randint(n, min = 0){ return Math.round(Math.random()*(n - min) + min);}
 
 
 export function initSocket(){
         console.log('initSocket called');
         console.log(window.location.hostname);
-        socket = new WebSocket('ws://192.168.88.130:8005');
-        // socket = new WebSocket(`ws://${window.location.hostname}:8005`);
+        // socket = new WebSocket(ws://{window.location.host});
+        socket = new WebSocket(`ws://${window.location.hostname}:8005`);
         console.log("CLIENT: ", socket);
         socket.onopen = function (event) {
                 console.log("connected");
@@ -595,6 +595,97 @@ export function send(){
                 socket.send(JSON.stringify(socketSend));
                 stage.clearActions();
         },20);
+}
+
+
+export async function userLogin(username, password) {
+        const credentials = {
+                "username": username,
+                "password": password
+        }
+        
+        const data= {
+                method: "POST",
+                headers: {
+                        "Authorization": "Basic " + btoa(credentials.username + ":" + credentials.password)
+                },
+                data: JSON.stringify({})
+        }
+
+        const response = await fetch(url + "/api/login", data);
+        const info = await response.json();
+        if('error' in info) {
+                return false;
+        }
+        return info
+}
+
+
+export async function userRegister(username, firstname, lastname, password, email, birthday) {
+        const information = {
+                username : username,
+                firstname: firstname,
+                lastname: lastname,
+                password: password,
+                email: email,
+                birthday: birthday
+        }
+
+        console.log(information);
+        const data = {
+                method: "POST",
+                headers: {
+                        'Content-Type': 'application/json'
+                      },
+                body: JSON.stringify(information)
+        }
+
+        const response = await fetch(url + "/api/register", data);
+        const info = await response.json();
+        console.log(info);
+        
+}
+
+export async function changeScore(username, score) {
+        const information = {
+                username: username,
+                score: score
+        }
+
+        const data = {
+                method: "POST",
+                headers: {
+                        'Content-Type': 'application/json'
+                      },
+                body: JSON.stringify(information)
+        }
+        
+        const response = await fetch(url + "/api/update", data);
+        const info = await response.json();
+        console.log(info);
+}
+
+export async function updateProfile(username, firstname, lastname, password, email, birthday) {
+        const information = {
+                username : username,
+                firstname: firstname,
+                lastname: lastname,
+                password: password,
+                email: email,
+                birthday: birthday
+        }
+
+        const data = {
+                method: "POST",
+                headers: {
+                        'Content-Type': 'application/json'
+                      },
+                body: JSON.stringify(information)
+        }
+
+        const response = await fetch(url + "/api/profile", data);
+        const info = await response.json();
+        return true;
 }
 
 // $(function(){

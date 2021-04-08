@@ -29,6 +29,24 @@ const theme = createMuiTheme({
 class Login extends React.Component{
     constructor(props){
         super(props);
+        this.state = {
+            username: '',
+            password: ''
+        }
+        this.updateUsername = this.updateUsername.bind(this);
+        this.updatePassword = this.updatePassword.bind(this);
+    }
+
+    updateUsername(e) {
+        if(e.target.value != '') {
+            this.setState({username: e.target.value});
+        }
+    }
+
+    updatePassword(e) {
+        if(e.target.value != '') {
+            this.setState({password: e.target.value});
+        }
     }
 
     render(){
@@ -41,6 +59,7 @@ class Login extends React.Component{
              style={{margin:8}}
              placeholder="Enter Username"
              fullWidth={true}
+             onChange={this.updateUsername}
              margin="normal"
              variant="outlined"
              />
@@ -50,11 +69,13 @@ class Login extends React.Component{
              style={{margin:8}}
              placeholder="Enter Password"
              fullWidth={true}
+             onChange={this.updatePassword}
              margin="normal"
              variant="outlined"
              />
+             <h2>{this.props.error}</h2>
              <ThemeProvider theme = {theme}>
-                 <Button onClick={this.props.loginHandler} variant="contained" color="primary" fullWidth={true}>
+                 <Button onClick={() => this.props.loginHandler(this.state.username, this.state.password)} variant="contained" color="primary" fullWidth={true}>
                      Login
                  </Button>
                  &nbsp;

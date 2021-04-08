@@ -15,10 +15,10 @@ module.exports = class gameStage {
 	constructor(){
 		this.actors=[]; // all actors on this stage (monsters, player, boxes, ...)
 		this.numObstacles = 20;
-        // this.numEnemies = 20;
-        // this.superEnemy = 1;
-        // this.superEnemyHealth = 80;
-        // this.enemyHealth = 50;
+        this.numEnemies = 20;
+        this.superEnemy = 1;
+        this.superEnemyHealth = 80;
+        this.enemyHealth = 50;
         this.numSmg = 15;
         this.numAr = 15;
         this.numAmmo = 20;
@@ -75,27 +75,29 @@ module.exports = class gameStage {
         }
 
         //AI Bots
-        // for(var k = 0; k < this.numEnemies; k++) {
-        //     var enX = randint(2000);
-        //     var enY = randint(2000);
-        //     var enPos = new Pair(enX, enY);
-        //     var colour = 'rgba(255,0,0,1)';
-        //     var enemy = new Enemy(this, enPos, colour, 10, this.enemyHealth);
-        //     if(this.getActor(enX, enY) == null) {
-        //         this.addActor(enemy);
-        //     }
-        // }
+        for(var k = 0; k < this.numEnemies; k++) {
+            var enX = randint(2000);
+            var enY = randint(2000);
+            var enPos = new Pair(enX, enY);
+            var colour = 'rgba(255,0,0,1)';
+            var enemy = new Enemy(this.objectID, this, enPos, colour, 10, this.enemyHealth);
+			this.objectID += 1;
+            if(this.getActor(enX, enY) == null) {
+                this.addActor(enemy);
+            }
+        }
 
-        // for(var k = 0; k < this.superEnemy; k++) {
-        //     var enX = randint(2000);
-        //     var enY = randint(2000);
-        //     var enPos = new Pair(enX, enY);
-        //     var colour = 'rgba(153,50,204,1)';
-        //     var enemy = new SuperEnemy(this, enPos, colour, 20, this.superEnemyHealth);
-        //     if(this.getActor(enX, enY) == null) {
-        //         this.addActor(enemy);
-        //     }
-        // }
+        for(var k = 0; k < this.superEnemy; k++) {
+            var enX = randint(2000);
+            var enY = randint(2000);
+            var enPos = new Pair(enX, enY);
+            var colour = 'rgba(153,50,204,1)';
+            var enemy = new SuperEnemy(this.objectID, this, enPos, colour, 20, this.superEnemyHealth);
+			this.objectID += 1;
+            if(this.getActor(enX, enY) == null) {
+                this.addActor(enemy);
+            }
+        }
 
         //Obstacles
         for(var i = 0; i < this.numObstacles; i++){
@@ -272,6 +274,14 @@ module.exports = class gameStage {
 		this.objectID += 1;
 		return bulletobj;
 	}
+	createEnemyBullet(x, y, dx,dy) {
+		var velocity = 5;
+		var damage = 10;
+		var color = 'rgba(255,0,0,1)';
+		var bulletObj = new Bullet(this.getCurrIndex() + 1, new Pair(x,y), new Pair(velocity * dx, velocity * dy), color, 5, damage);
+		this.objectID += 1;
+		return bulletObj;
+	}
 
 	createObstacle(x, y){
 		var obs = new Obstacle(this.getCurrIndex() + 1, new Pair(x, y), 50, 50, 50);
@@ -291,6 +301,7 @@ module.exports = class gameStage {
 			var uY = unitY / Math.sqrt(Math.pow(unitY, 2) + Math.pow(unitX, 2));
 			var b = new Bullet(this, new Pair(this.player.x, this.player.y), new Pair( velocity *uX, velocity *uY), color, 5, damage);
 			this.addActor(b);
+			this.objectID +=1;
 			this.player.useAmmo();
 			if(this.player.ammo == 0){
 				this.player.removeGun();
@@ -577,7 +588,8 @@ class Obstacle extends GameObject {
 
 class Enemy extends GameObject{
 	constructor(id, stage, position, colour, damage, health) {
-        super(id, stage, position, health);
+        super(id, position, health);
+		this.stage = stage;
         this.colour = colour;
 		this.damage = damage;
 		this.height = 15;

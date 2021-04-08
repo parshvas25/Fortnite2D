@@ -23,10 +23,9 @@ const theme = createMuiTheme({
 });
 
 
-class Registration extends React.Component {
+class Update extends React.Component {
     constructor(props) {
         super(props);
-        this.checkUsername = this.checkUsername.bind(this);
         this.checkPassword = this.checkPassword.bind(this);
         this.checkConfirmPassword = this.checkConfirmPassword.bind(this);
         this.checkEmail = this.checkEmail.bind(this);
@@ -36,30 +35,19 @@ class Registration extends React.Component {
         this.checkRegistration = this.checkRegistration.bind(this);
     }
     state = {
-        username: '',
         password: '',
         cpassword: '',
         email: '',
         birthday: '',
         first: '',
         last:'',
-        errors: ["Username cannot be empty"],
+        errors: ["First name cannot be empty"],
         valid: [false]
     };
 
     componentDidMount() {}
 
-    checkUsername(e) {
-        if(e.target.value == '') {
-            this.state.errors.push("Username cannot be empty");
-            this.setState({username: e.target.value});
-            this.setState({valid: false});
-        } else {
-            this.setState({username: e.target.value});
-            this.setState({errors: []});
-        }
-    }
-
+    
     checkPassword(e) {
         if(e.target.value == '') {
            this.state.errors.push("Password cannot be empty");
@@ -118,26 +106,30 @@ class Registration extends React.Component {
     }
 
     checkRegistration() {
-        if(this.state.username == ''){
-            this.state.errors.push("Username cannot be empty");
-        }
-        else if(this.state.password == '') {
+        console.log(this.state);
+        if(this.state.password == '') {
+            console.log("1");
             this.state.errors.push("Password cannot be empty");
         }
         else if(this.state.password != this.state.cpassword) {
+            console.log("2");
             this.state.errors.push("Passwords must match");
         }
         else if(this.state.email == '') {
+            console.log("3");
             this.state.errors.push("Email cannot be empty");
         }
         else if(this.state.first == '') {
+            console.log("4");
             this.state.errors.push("First name cannot be empty");
         }
         else if(this.state.last == '') {
+            console.log("5");
             this.state.errors.push("Last name cannot be empty");
         } else {
+            console.log("update called");
             //Handle Registration call to backend
-            this.props.toLogin(this.state.username, this.state.first, this.state.last, this.state.password, this.state.email, this.state.birthday);
+            this.props.updateProfile(this.state.first, this.state.last, this.state.password, this.state.email, this.state.birthday);
         }
     }
 
@@ -145,17 +137,7 @@ class Registration extends React.Component {
 
         return (
            <div className="title">
-            <h1>Register</h1>
-            <TextField
-            id="filled-full-width"
-            label="Username"
-            style={{margin:8}}
-            placeholder="Create Username"
-            onChange={this.checkUsername}
-            fullWidth={true}
-            margin="normal"
-            variant="outlined"
-            />
+            <h1>Update Profile</h1>
              <TextField
             id="filled-full-width"
             label="First Name"
@@ -222,7 +204,7 @@ class Registration extends React.Component {
               
             <ThemeProvider theme = {theme}>
                 <Button onClick={this.checkRegistration} variant="contained" color="primary" fullWidth={true}>
-                    Register
+                    Update Profile
                 </Button>
             </ThemeProvider>
            </div>
@@ -231,4 +213,4 @@ class Registration extends React.Component {
         );
     }
 }
-export default Registration;
+export default Update;

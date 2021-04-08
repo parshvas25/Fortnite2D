@@ -1,12 +1,12 @@
 var port = 8000; 
 // var websocket =  8001;
 var serverInterval;
-
+const cors = require('cors');
 var express = require('express');
 const jwt = require("jsonwebtoken");
 var app = express();
 var accessTokenSecret = 'randomstringtestfornow';
-
+app.use(cors());
 var Game = require('./gameStage');
 
 const { Pool } = require('pg');
@@ -20,6 +20,7 @@ const pool = new Pool({
 
 const bodyParser = require('body-parser'); // we used this middleware to parse POST bodies
 
+var count = 0;
 var clients = {};
 var gameObj = new Game();
 var gameState = gameObj.serialize();
@@ -156,6 +157,67 @@ function removeActors(actorJson, world){
 	return world
 }
 
+function enemyMovementCollision(worldJson, x, y) {
+	var obsList = worldJson['obstacle'];
+	for (var i = 0; i < obsList.length; i++) {
+		obstacle = obsList[i];
+		if((x + 15 >= obstacle.x && obstacle.x + obstacle.width >= x) && (y + 15 >= obstacle.y && obstacle.y + obstacle.health >= x)) {
+			return true;
+		}
+	}
+	return false;
+}
+
+
+function enemyShoot(playerObj, worldJson) {
+	var enemyList = worldJson['enemy'];
+	var randomPlayer = playerObj[Math.floor(Math.random() * playerObj.length)];
+	for(var j = 0; j < enemyList.length; j++) {
+		var x = enemyList[j].x;
+		var y = enemyList[j].y;
+		var dX = randomPlayer.x - enemyList[j].x;
+		var dY = randomPlayer.y - enemyList[j].y;
+		var uX = dX / Math.sqrt(Math.pow(dX, 2) + Math.pow(dY, 2));
+		var uY = dY / Math.sqrt(Math.pow(dY, 2) + Math.pow(dX, 2));
+		var bulletObj = gameObj.createEnemyBullet(x, y ,uX, uY);
+		if("bullet" in worldJson) {
+			worldJson["bullet"].push(bulletObj)
+		} else {
+			worldJson["bullet"] = [bulletObj];
+		}
+	}
+}
+
+
+function moveEnemies(playerObj, worldJson) {
+	var enemyList = worldJson['enemy'];
+	var randomPlayer = playerObj[Math.floor(Math.random() * playerObj.length)];
+	console.log(randomPlayer);
+	for(var j = 0; j< enemyList.length; j++) {
+		var dX = randomPlayer.x - enemyList[j].x;
+		var dY = randomPlayer.y - enemyList[j].y;
+		var uX = dX / Math.sqrt(Math.pow(dX, 2) + Math.pow(dY, 2));
+		var uY = dY / Math.sqrt(Math.pow(dY, 2) + Math.pow(dX, 2));
+		if(enemyMovementCollision(worldJson, enemyList[j].x + uX, enemyList[j] + uY) != true) {
+			console.log("move closer");
+			enemyList[j].x += uX;
+			enemyList[j].y +=   uY;
+		} else {
+			var randomX = Math.random() * ((Math.floor(Math.random() * 2) * 2) -1);
+			var randomY = Math.random() * ((Math.floor(Math.random() * 2) * 2) -1);
+			while(enemyMovementCollision(worldJson, enemyList[j].x + randomX, enemyList[j] + randomY ) != true) {
+				randomX = Math.random() * ((Math.floor(Math.random() * 2) * 2) -1);
+				randomY = Math.random() * ((Math.floor(Math.random() * 2) * 2) -1);
+			}
+			enemyList[j].x += 3 *randomX;
+			enemyList[j].y +=   3 * randomY;
+
+		}
+	}
+	return enemyList;
+
+}
+
 var WebSocketServer = require('ws');
 const wss = new WebSocketServer.Server({port: 8005});
 
@@ -176,9 +238,10 @@ wss.on('connection', function(ws) {
 	ws.send(gameState);
 
 	ws.on('message', function(game) {
+		count +=1;
 		var gamejson = JSON.parse(game);
 		var worldJson = JSON.parse(gameState);
-		
+		console.log(worldJson);
 		if('addPlayer' in gamejson){
 			var newPlayer = gamejson['addPlayer'];
 			ws.userName = newPlayer.name;
@@ -238,7 +301,11 @@ wss.on('connection', function(ws) {
 				}
 			}
 
-
+			var newEnemyList = moveEnemies(worldPlayers, worldJson);
+			worldJson['enemy'] = newEnemyList;
+			if(count % 500 == 0) {
+			enemyShoot(worldPlayers, worldJson);
+			}
 			gameState = JSON.stringify(worldJson);
 		}
 
@@ -275,7 +342,7 @@ app.post('/api/test', function (req, res) {
 
 app.post('/api/register', function (req, res){
 	console.log("route called");
-	console.log(req.body);
+	console.log(req);
 	var uname = req.body.username;
 	var pswd = req.body.password;
 	var fname = req.body.firstname;
@@ -353,6 +420,8 @@ app.post('/api/update', function(req, res) {
 	pool.query(sql, [username, score] , (err, pgres) => {
 		if(err) {
 			res.status(403).json({error: 'Could not update db'});
+		} else {
+			console.log("score updated");
 		}
 	});
 });
@@ -398,9 +467,11 @@ app.use('/api/login', function (req, res) {
   			if (err){
                 		res.status(403).json({ error: 'Not authorized'});
 			} else if(pgRes.rowCount == 1){
+				console.log("user was found");
 				var email = pgRes.rows[0].email;
 				let sql2 = 'SELECT score FROM score WHERE username=$1';
 				pool.query(sql2, [username], (err, result) => {
+					console.log("this also works");
 					var highscore = result.rows[0].score;
 					const accessToken = jwt.sign({user: username, pass: password}, accessTokenSecret);
 					res.status(200);
