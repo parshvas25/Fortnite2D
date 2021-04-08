@@ -13,30 +13,6 @@ class Inventory extends React.Component{
         }
     }
 
-    setGun(obj){
-        this.setState({
-            gun: obj
-        })
-    }
-
-    setBrick(obj){
-        this.setState({
-            brick: obj
-        })
-    }
-
-    clearGun(){
-        this.setState({
-            gun: null
-        })
-    }
-
-    clearBrick(){
-        this.setState({
-            brick: null
-        })
-    }
-
     render(){
         const tableStyle= {
             border: '1px solid black',
