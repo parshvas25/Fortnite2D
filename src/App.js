@@ -29,6 +29,7 @@ class App extends Component{
 			inventory : null,
 			mobile: false
 		}
+		this.backToLogin = this.backToLogin.bind(this);
 		this.loginSuccess = this.showPause.bind(this);
 		this.toRegistration = this.showRegistration.bind(this);
 		this.registrationSuccess = this.showLogin.bind(this);
@@ -57,7 +58,19 @@ class App extends Component{
         clearInterval(this.intervalID);
     }
 
-	 async showPause(username, password) {
+	backToLogin(){
+		console.log('back called');
+		this.setState({
+			showLogin: true,
+			showPause: false,
+			showGame: false,
+			showUpdate: false, 
+			showRegistration : false,
+			showGameOver : false,
+		})
+	}
+
+	async showPause(username, password) {
 		const response = await userLogin(username, password);
 		if(response != false) {
 			console.log(response);
@@ -198,6 +211,7 @@ class App extends Component{
 				{this.state.showRegistration && 
 					<Registration
 						toLogin={this.registrationSuccess}
+						back={this.backToLogin}
 					/>
 				}
 				{this.state.showPause && 

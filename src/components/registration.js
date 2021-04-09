@@ -43,7 +43,7 @@ class Registration extends React.Component {
         birthday: '',
         first: '',
         last:'',
-        errors: ["Username cannot be empty"],
+        errors: [],
         valid: [false]
     };
 
@@ -147,74 +147,76 @@ class Registration extends React.Component {
            <div className="title">
             <h1>Register</h1>
             <TextField
-            id="filled-full-width"
-            label="Username"
-            style={{margin:8}}
-            placeholder="Create Username"
-            onChange={this.checkUsername}
-            fullWidth={true}
-            margin="normal"
-            variant="outlined"
+                id="filled-full-width"
+                label="Username"
+                style={{margin:8}}
+                placeholder="Create Username"
+                onChange={this.checkUsername}
+                fullWidth={true}
+                margin="normal"
+                variant="outlined"
             />
              <TextField
-            id="filled-full-width"
-            label="First Name"
-            style={{margin:8}}
-            placeholder="Enter First Name"
-            onChange={this.checkFirst}
-            fullWidth={true}
-            margin="normal"
-            variant="outlined"
+                id="filled-full-width"
+                label="First Name"
+                style={{margin:8}}
+                placeholder="Enter First Name"
+                onChange={this.checkFirst}
+                fullWidth={true}
+                margin="normal"
+                variant="outlined"
             />
              <TextField
-            id="filled-full-width"
-            label="Last Name"
-            style={{margin:8}}
-            placeholder="Enter Last Name"
-            onChange={this.checkLast}
-            fullWidth={true}
-            margin="normal"
-            variant="outlined"
+                id="filled-full-width"
+                label="Last Name"
+                style={{margin:8}}
+                placeholder="Enter Last Name"
+                onChange={this.checkLast}
+                fullWidth={true}
+                margin="normal"
+                variant="outlined"
             />
             
             <TextField
-            id="filled-full-width"
-            label="Password"
-            style={{margin:8}}
-            placeholder="Create Password"
-            fullWidth={true}
-            onChange={this.checkPassword}
-            margin="normal"
-            variant="outlined"
+                id="filled-full-width"
+                label="Password"
+                type='password'
+                style={{margin:8}}
+                placeholder="Create Password"
+                fullWidth={true}
+                onChange={this.checkPassword}
+                margin="normal"
+                variant="outlined"
             />
              <TextField
-            id="filled-full-width"
-            label="Confirm Password"
-            style={{margin:8}}
-            placeholder="Confirm Password"
-            fullWidth={true}
-            onChange={this.checkConfirmPassword}
-            margin="normal"
-            variant="outlined"
+                id="filled-full-width"
+                label="Confirm Password"
+                type='password'
+                style={{margin:8}}
+                placeholder="Confirm Password"
+                fullWidth={true}
+                onChange={this.checkConfirmPassword}
+                margin="normal"
+                variant="outlined"
             />
             <TextField
-            id="filled-full-width"
-            label="Enter Email"
-            style={{margin:8}}
-            placeholder="Enter Email"
-            fullWidth={true}
-            onChange={this.checkEmail}
-            margin="normal"
-            variant="outlined"
+                id="filled-full-width"
+                label="Enter Email"
+                style={{margin:8}}
+                placeholder="Enter Email"
+                fullWidth={true}
+                onChange={this.checkEmail}
+                margin="normal"
+                variant="outlined"
             />
             <TextField
-            id="date"
-            label="Birthday"
-            type="date"
-            style={{margin:12}}
-            onChange={this.updateBirthday}
-            InputLabelProps={{
-            shrink: true,
+                id="date"
+                label="Birthday"
+                type="date"
+                style={{margin:12}}
+                onChange={this.updateBirthday}
+                InputLabelProps={{
+                shrink: true,
             }}
             />
 
@@ -223,6 +225,13 @@ class Registration extends React.Component {
             <ThemeProvider theme = {theme}>
                 <Button onClick={this.checkRegistration} variant="contained" color="primary" fullWidth={true}>
                     Register
+                </Button>
+                &nbsp;
+                &nbsp;
+                &nbsp;
+                &nbsp;
+                <Button onClick={this.props.back} variant="contained" color="primary" fullWidth={true}>
+                    Login
                 </Button>
             </ThemeProvider>
            </div>
