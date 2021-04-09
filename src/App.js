@@ -18,6 +18,11 @@ class App extends Component{
 		this.state = {
 			username: '',
 			highscore: null,
+			email: '',
+			firstname: '',
+			lastname: '',
+			birthday: '',
+			password: '',
 			showLogin : true,
 			showRegistration : false,
 			showPause : false,
@@ -41,12 +46,12 @@ class App extends Component{
 		this.move = this.moveCharacter.bind(this);
 		this.block = this.placeBlockMobile.bind(this);
 		this.device = this.switchDevice.bind(this);
+		this.showGameOver = this.showGameOver.bind(this);
 		window.appComponent = this
 	}
 
-	async componentDidMount() {
-		this.interval = setInterval(() => this.setState({score: this.state.score + 10}), 500); 
-		
+	componentDidMount() {
+		this.interval = setInterval(() => this.setState({score: this.state.score + 10}), 500);
 	}
 
 	// getName=()=>{
@@ -60,7 +65,7 @@ class App extends Component{
 	}
 
 	componentWillUnmount() {
-        clearInterval(this.interval);
+        clearInterval(this.intervalID);
     }
 
 	backToLogin(){
@@ -98,6 +103,11 @@ class App extends Component{
 			showPause: true,
 			username: response.username,
 			highscore: response.highscore,
+			email: response.email,
+			password: response.password,
+			birthday: response.birthday,
+			firstname: response.firstname,
+			lastname: response.lastname,
 			showGameOver : false,
 		})
 		console.log(this.state.username);
@@ -166,6 +176,7 @@ class App extends Component{
 		})
 	}
 	showGameOver(){
+		changeScore(this.state.username, this.state.score);
 		this.setState({
 			showLogin: false,
 			showPause: false,
@@ -240,6 +251,11 @@ class App extends Component{
 				<Update
 					updateProfile={this.updateProfile}
 					back={this.backToPause}
+					firstname={this.state.firstname}
+					lastname={this.state.lastname}
+					email={this.state.email}
+					password={this.state.password}
+					birthday={this.state.birthday}
 				/>
 				}
 				{(this.state.showGame && this.state.mobile) && <OverlayMobile

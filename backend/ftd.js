@@ -509,13 +509,16 @@ app.use('/api/login', function (req, res) {
 			} else if(pgRes.rowCount == 1){
 				console.log("user was found");
 				var email = pgRes.rows[0].email;
+				var firstname = pgRes.rows[0].firstname;
+				var lastname = pgRes.rows[0].lastname;
+				var birthday = pgRes.rows[0].birthday;
 				let sql2 = 'SELECT score FROM score WHERE username=$1';
 				pool.query(sql2, [username], (err, result) => {
 					console.log("this also works");
 					var highscore = result.rows[0].score;
 					const accessToken = jwt.sign({user: username, pass: password}, accessTokenSecret);
 					res.status(200);
-					res.json({accessToken, highscore, username, email});
+					res.json({accessToken, highscore, username, email, firstname, lastname, birthday});
 				})
 			} else {
                 		res.status(403).json({ error: 'Not authorized'});
