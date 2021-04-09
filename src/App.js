@@ -38,12 +38,12 @@ class App extends Component{
 		this.move = this.moveCharacter.bind(this);
 		this.block = this.placeBlockMobile.bind(this);
 		this.device = this.switchDevice.bind(this);
+		this.showGameOver = this.showGameOver.bind(this);
 		window.appComponent = this
 	}
 
-	async componentDidMount() {
-		this.interval = setInterval(() => this.setState({score: this.state.score + 10}), 500); 
-		
+	componentDidMount() {
+		this.interval = setInterval(() => this.setState({score: this.state.score + 10}), 500);
 	}
 
 	setInventory(newInventory) {
@@ -54,7 +54,7 @@ class App extends Component{
 
 
 	componentWillUnmount() {
-        clearInterval(this.interval);
+        clearInterval(this.intervalID);
     }
 
 	 async showPause(username, password) {
@@ -137,6 +137,7 @@ class App extends Component{
 		})
 	}
 	showGameOver(){
+		changeScore(this.state.username, this.state.score);
 		this.setState({
 			showLogin: false,
 			showPause: false,
