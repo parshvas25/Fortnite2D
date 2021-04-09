@@ -28,18 +28,17 @@ var socketSend = {};
 var dev;
 var mobile;
 // var url = `http://${window.location.hostname}:8000`;
-var url = `http://192.168.66.128:8000`;
+var url = `http://192.168.88.130:8000`;
 
 function randint(n, min = 0){ return Math.round(Math.random()*(n - min) + min);}
 
 
 export function initSocket(){
-        // console.log('initSocket called');
         console.log(window.location.hostname);
-        // socket = new WebSocket(ws://{window.location.host});
-        // var url = `http://192.168.88.130:8000`;
-        // socket = new WebSocket(`ws://192.168.88.130:8005`);
-        socket = new WebSocket(`ws://${window.location.hostname}:8005`);
+
+        socket = new WebSocket(`ws://192.168.88.130:8005`);
+        // socket = new WebSocket(`ws://${window.location.hostname}:8005`);
+
         console.log("CLIENT: ", socket);
         socket.onopen = function (event) {
                 console.log("connected");

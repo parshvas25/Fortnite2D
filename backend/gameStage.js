@@ -315,10 +315,22 @@ module.exports = class gameStage {
 	checkObstaclePlayerInitialCollision(obstacle){
 		var playerX = Math.floor(this.width/2);
 		var playerY = Math.floor(this.height/2);
-		if(playerX > obstacle.position.x && playerX < obstacle.position.x + obstacle.width &&
-			playerY > obstacle.position.y && playerY < obstacle.position.y + obstacle.height){
+		// if(playerX > obstacle.position.x && playerX < obstacle.position.x + obstacle.width &&
+		// 	playerY > obstacle.position.y && playerY < obstacle.position.y + obstacle.height){
+		// 		return true;
+		// 	}
+
+			if(((playerX > obstacle.position.x && playerX < obstacle.position.x + obstacle.width) && 
+			(playerY > obstacle.position.y && playerY < obstacle.position.y + obstacle.height)) ||
+		((playerX + 5 > obstacle.position.x && playerX + 5 < obstacle.position.x + obstacle.width) && 
+			(playerY + 5 > obstacle.position.y && playerY + 5 < obstacle.position.y + obstacle.height)) ||
+		((playerX + 5 > obstacle.position.x && playerX + 5 < obstacle.position.x + obstacle.width) && 
+			(playerY > obstacle.position.y && playerY < obstacle.position.y + obstacle.height)) ||
+		((playerX > obstacle.position.x && playerX < obstacle.position.x + obstacle.width) && 
+			(playerY + 5 > obstacle.position.y && playerY + 5 < obstacle.position.y + obstacle.height))){
 				return true;
 			}
+
 		return false;
 	}
 
