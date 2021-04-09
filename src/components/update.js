@@ -140,9 +140,9 @@ class Update extends React.Component {
             <h1>Update Profile</h1>
              <TextField
             id="filled-full-width"
-            label="First Name"
+            label={this.props.firstname}
             style={{margin:8}}
-            placeholder="Enter First Name"
+            placeholder={this.props.firstname}
             onChange={this.checkFirst}
             fullWidth={true}
             margin="normal"
@@ -150,9 +150,9 @@ class Update extends React.Component {
             />
              <TextField
             id="filled-full-width"
-            label="Last Name"
+            label={this.props.lastname}
             style={{margin:8}}
-            placeholder="Enter Last Name"
+            placeholder={this.props.lastname}
             onChange={this.checkLast}
             fullWidth={true}
             margin="normal"
@@ -181,9 +181,9 @@ class Update extends React.Component {
             />
             <TextField
             id="filled-full-width"
-            label="Enter Email"
+            label={this.props.email}
             style={{margin:8}}
-            placeholder="Enter Email"
+            placeholder={this.props.email}
             fullWidth={true}
             onChange={this.checkEmail}
             margin="normal"

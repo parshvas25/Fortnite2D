@@ -150,7 +150,7 @@ class Registration extends React.Component {
                 id="filled-full-width"
                 label="Username"
                 style={{margin:8}}
-                placeholder="Create Username"
+                placeholder={"Create Username"}
                 onChange={this.checkUsername}
                 fullWidth={true}
                 margin="normal"

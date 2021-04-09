@@ -18,6 +18,11 @@ class App extends Component{
 		this.state = {
 			username: '',
 			highscore: null,
+			email: '',
+			firstname: '',
+			lastname: '',
+			birthday: '',
+			password: '',
 			showLogin : true,
 			showRegistration : false,
 			showPause : false,
@@ -83,6 +88,11 @@ class App extends Component{
 			showPause: true,
 			username: response.username,
 			highscore: response.highscore,
+			email: response.email,
+			password: response.password,
+			birthday: response.birthday,
+			firstname: response.firstname,
+			lastname: response.lastname,
 			showGameOver : false,
 		})
 		console.log(this.state.username);
@@ -224,6 +234,11 @@ class App extends Component{
 				{this.state.showUpdate &&
 				<Update
 					updateProfile={this.updateProfile}
+					firstname={this.state.firstname}
+					lastname={this.state.lastname}
+					email={this.state.email}
+					password={this.state.password}
+					birthday={this.state.birthday}
 				/>
 				}
 				{(this.state.showGame && this.state.mobile) && <OverlayMobile
