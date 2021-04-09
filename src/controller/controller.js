@@ -640,7 +640,11 @@ export async function userRegister(username, firstname, lastname, password, emai
 
         const response = await fetch(url + "/api/register", data);
         const info = await response.json();
-        console.log(info);
+        if("Success" in info) {
+                return true;
+        } else {
+                return false;
+        }
         
 }
 
