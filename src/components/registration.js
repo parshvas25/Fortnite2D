@@ -43,7 +43,7 @@ class Registration extends React.Component {
         birthday: '',
         first: '',
         last:'',
-        errors: ["Username cannot be empty"],
+        errors: [],
         valid: [false]
     };
 
@@ -225,6 +225,13 @@ class Registration extends React.Component {
             <ThemeProvider theme = {theme}>
                 <Button onClick={this.checkRegistration} variant="contained" color="primary" fullWidth={true}>
                     Register
+                </Button>
+                &nbsp;
+                &nbsp;
+                &nbsp;
+                &nbsp;
+                <Button onClick={this.props.back} variant="contained" color="primary" fullWidth={true}>
+                    Login
                 </Button>
             </ThemeProvider>
            </div>
