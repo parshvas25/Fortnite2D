@@ -6,8 +6,10 @@ import Registration from './components/registration';
 import GameView from './components/GameView';
 import Inventory from './components/Inventory';
 import GameOver from './components/GameOver';
+import RecordButton from './components/recordButton';
 
 import {initSocket} from './controller/controller';
+import {startRecording, stopRecording} from './controller/webRTC';
 
 class App extends Component{
 	constructor(){
@@ -106,6 +108,7 @@ class App extends Component{
 				}
 				{this.state.showGame && <GameView/>}
 				{this.state.showGame && <Inventory inventory={this.state.inventory}/>}
+				{this.state.showGame && <RecordButton start={startRecording} stop={stopRecording}/>}
 				{this.state.showGameOver && <GameOver/>}
 			</div>
 		)
