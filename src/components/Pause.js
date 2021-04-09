@@ -105,6 +105,13 @@ export default function Pause(props) {
                 <Button onClick={props.toUpdate} variant="contained" color="primary" fullWidth={true}>
                     Update Profile
                 </Button>
+                &nbsp;
+                &nbsp;
+                &nbsp;
+                &nbsp;
+                <Button onClick={props.toLeaderboard} variant="contained" color="primary" fullWidth={true}>
+                    Leaderboard
+                </Button>
                 </Grid>
             </div>
         );

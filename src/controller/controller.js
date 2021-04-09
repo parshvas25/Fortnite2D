@@ -647,6 +647,22 @@ export async function userRegister(username, firstname, lastname, password, emai
         }
         
 }
+export async function fetchLeaderboard() {
+        const data = {
+                method: "POST",
+                body: JSON.stringify({})
+        }
+        console.log("am here");
+        const response = await fetch(url + "/api/leaderboard", data);
+        console.log(response);
+        const info = await response.json();
+        var l = [];
+        for(var i = 0; i < info.length; i++) {
+                l.push(info[i]);
+        }
+        console.log(l);
+        return l;
+}
 
 export async function changeScore(username, score) {
         const information = {
@@ -661,7 +677,6 @@ export async function changeScore(username, score) {
                       },
                 body: JSON.stringify(information)
         }
-        
         const response = await fetch(url + "/api/update", data);
         const info = await response.json();
         if("Success" in info) {
@@ -690,6 +705,24 @@ export async function updateProfile(username, firstname, lastname, password, ema
         }
 
         const response = await fetch(url + "/api/profile", data);
+        const info = await response.json();
+        return true;
+}
+
+export async function deleteUser(username) {
+        const information = {
+                username: username
+        }
+
+        const data = {
+                method: "POST",
+                headers: {
+                        'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(information)
+        }
+
+        const response = await fetch(url + "/api/delete", data);
         const info = await response.json();
         return true;
 }

@@ -6,11 +6,12 @@ import Registration from './components/registration';
 import OverlayComputer from './components/OverlayComputer';
 import GameView from './components/GameView';
 import Inventory from './components/Inventory';
-import {changeScore, initSocket, moveButton, placeBlockMobile, updateProfile, userLogin, userRegister} from './controller/controller';
+import {changeScore, deleteUser, fetchLeaderboard, initSocket, moveButton, placeBlockMobile, updateProfile, userLogin, userRegister} from './controller/controller';
 import Update from './components/update';
 import { lightGreen } from '@material-ui/core/colors';
 import GameOver from './components/GameOver';
 import OverlayMobile from './components/OverlayMobile';
+import Leaderboard from './components/leaderboard';
 
 class App extends Component{
 	constructor(){
@@ -32,7 +33,9 @@ class App extends Component{
 			score: 0,
 			showGameOver : false,
 			inventory : null,
-			mobile: false
+			mobile: false,
+			leaderboard: null,
+			showLeaderboard: false,
 		}
 		this.backToLogin = this.backToLogin.bind(this);
 		this.loginSuccess = this.showPause.bind(this);
@@ -45,7 +48,38 @@ class App extends Component{
 		this.block = this.placeBlockMobile.bind(this);
 		this.device = this.switchDevice.bind(this);
 		this.showGameOver = this.showGameOver.bind(this);
+		this.delete = this.deleteProfile.bind(this);
+		this.toLeaderboard = this.leaderboardFetch.bind(this);
+		this.return = this.returnToPause.bind(this);
 		window.appComponent = this
+	}
+
+	async leaderboardFetch() {
+		const response = await fetchLeaderboard();
+		console.log(response);
+		this.setState({leaderboard: response});
+		this.setState({
+			showLogin: false,
+			showPause: false,
+			showGame: false,
+			showUpdate: false,
+			showRegistration : false,
+			showGameOver : false,
+			showLeaderboard: true
+		})
+
+	}
+
+	returnToPause() {
+		this.setState({
+			showLogin: false,
+			showPause: true,
+			showGame: false,
+			showUpdate: false,
+			showRegistration : false,
+			showGameOver : false,
+			showLeaderboard: false
+		})
 	}
 
 	componentDidMount() {
@@ -205,6 +239,19 @@ class App extends Component{
 		})
 	}
 	}
+
+	async deleteProfile() {
+		console.log("got here");
+		deleteUser(this.state.username);
+		this.setState({
+			showLogin: true,
+			showPause: false,
+			showGame: false,
+			showUpdate: false, 
+			showRegistration : false,
+			error: "User deleted successfuly",
+		})
+	}
 	
 
 
@@ -228,6 +275,7 @@ class App extends Component{
 				<Pause
 					toGame={this.playGame}
 					toUpdate={this.update}
+					toLeaderboard={this.toLeaderboard}
 					switch={this.device}
 				/>
 				}
@@ -239,6 +287,7 @@ class App extends Component{
 					email={this.state.email}
 					password={this.state.password}
 					birthday={this.state.birthday}
+					delete={this.delete}
 				/>
 				}
 				{(this.state.showGame && this.state.mobile) && <OverlayMobile
@@ -254,6 +303,10 @@ class App extends Component{
 				{this.state.showGame && <GameView/>}
 				{this.state.showGame && <Inventory inventory={this.state.inventory}/>}
 				{this.state.showGameOver && <GameOver/>}
+				{this.state.showLeaderboard && <Leaderboard
+					leaderboard={this.state.leaderboard}
+					toReturn={this.return}
+				/>}
 			</div>
 		)
 	}
