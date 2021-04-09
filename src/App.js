@@ -9,6 +9,7 @@ import Inventory from './components/Inventory';
 import {changeScore, initSocket, updateProfile, userLogin, userRegister} from './controller/controller';
 import Update from './components/update';
 import { lightGreen } from '@material-ui/core/colors';
+import GameOver from './components/GameOver';
 
 class App extends Component{
 	constructor(){
@@ -22,7 +23,9 @@ class App extends Component{
 			showGame : false,
 			showUpdate: false,
 			error: '',
-			score: 0
+			score: 0,
+			showGameOver : false,
+			inventory : null,
 		}
 		this.loginSuccess = this.showPause.bind(this);
 		this.toRegistration = this.showRegistration.bind(this);
@@ -30,17 +33,23 @@ class App extends Component{
 		this.playGame = this.showGame.bind(this);
 		this.update = this.showUpdate.bind(this);
 		this.updateProfile = this.profileUpdate.bind(this);
+		window.appComponent = this
 	}
 
 	async componentDidMount() {
 		this.interval = setInterval(() => this.setState({score: this.state.score + 10}), 500); 
+		
+	}
+
+	setInventory(newInventory) {
+		this.setState({
+			inventory: newInventory
+		})
 	}
 
 
 	componentWillUnmount() {
         clearInterval(this.interval);
-
-		clearInterval(this.newInterval);
     }
 
 	 async showPause(username, password) {
@@ -55,7 +64,8 @@ class App extends Component{
 			showUpdate: false,
 			showPause: true,
 			username: response.username,
-			highscore: response.highscore
+			highscore: response.highscore,
+			showGameOver : false,
 		})
 		console.log(this.state.username);
 		console.log(this.state.highscore);
@@ -71,6 +81,7 @@ class App extends Component{
 			showGame: false,
 			showUpdate: false,
 			showRegistration : true,
+			showGameOver : false,
 		})
 	}
 
@@ -84,6 +95,7 @@ class App extends Component{
 			showGame: false,
 			showUpdate: false, 
 			showRegistration : false,
+			showGameOver : false,
 		})
 	}
 	
@@ -94,6 +106,7 @@ class App extends Component{
 			showGame: true,
 			showUpdate: false,
 			showRegistration : false,
+			showGameOver : false,
 		})
 	}
 
@@ -104,6 +117,18 @@ class App extends Component{
 			showGame: false,
 			showUpdate: true,
 			showRegistration : false,
+			showGameOver : false,
+		})
+	}
+	showGameOver(){
+		this.setState({
+			showLogin: false,
+			showPause: false,
+			showGame: false,
+			showUpdate: true,
+			showRegistration : false,
+			showRegistration : false,
+			showGameOver : true,
 		})
 	}
 
@@ -124,6 +149,8 @@ class App extends Component{
 		})
 	}
 	}
+	
+
 
 	render(){
 		return (
@@ -134,10 +161,11 @@ class App extends Component{
 					registrationHandler={this.toRegistration}
 					error={this.state.error}
 				/>}
+				
 				{this.state.showRegistration && 
-				<Registration
-					toLogin={this.registrationSuccess}
-				/>
+					<Registration
+						toLogin={this.registrationSuccess}
+					/>
 				}
 				{this.state.showPause && 
 				<Pause
@@ -150,10 +178,13 @@ class App extends Component{
 					updateProfile={this.updateProfile}
 				/>
 				}
-				{this.state.showGame && <GameView/>}
 				{this.state.showGame && <OverlayComputer
 					highscore={this.state.highscore}/>}
-				{this.state.showGame && <Inventory/>}
+				
+
+				{this.state.showGame && <GameView/>}
+				{this.state.showGame && <Inventory inventory={this.state.inventory}/>}
+				{this.state.showGameOver && <GameOver/>}
 			</div>
 		)
 	}

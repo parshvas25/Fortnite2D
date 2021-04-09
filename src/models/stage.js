@@ -44,6 +44,7 @@ export class Stage {
 		this.gameState = "play";
 		this.actors=[]; // all actors on this stage (monsters, player, boxes, ...)
 		this.player=null; // a special actor, the player
+		this.deadPlayer = null;
 		this.score = 0;
 		canvas.width = window.innerWidth;
 		canvas.height = window.innerHeight;
@@ -64,10 +65,9 @@ export class Stage {
 
 		var position = new Pair(Math.floor(this.width/2), Math.floor(this.height/2));
         var velocity = new Pair(0,0);
-        var radius = 15; //saashu is the best PERIODT. SAVE THE BLOODY TURTLES.
+        var radius = 15; 
         var colour= colour;
         this.player = new Player(this, position, velocity, colour, radius, userName);
-		console.log('Game recieved: ', gamejson);
 		this.populateActors(gamejson);
 	}	
 
@@ -103,7 +103,6 @@ export class Stage {
 
 	populateActors(gamejson){
 		this.actors = [];
-		console.log('populate Actors called');
 		for(const [key, value] of Object.entries(gamejson)){
 			if(key == "gun"){
 				this.populateGuns(value)
@@ -130,7 +129,6 @@ export class Stage {
 	}
 
 	populateGuns(gunList){
-		console.log("Gun");
 		for(var i = 0 ; i < gunList.length; i++){
 			var gun = gunList[i];
 			if(gun.bulletVelocity == 30){
@@ -146,7 +144,6 @@ export class Stage {
 	}
 
 	populateAmmo(ammoList){
-		console.log("Ammo");
 		for(var i = 0 ; i < ammoList.length; i++){
 			var ammo = ammoList[i];
 			var ammoPos = new Pair(ammo.x, ammo.y);
@@ -156,7 +153,6 @@ export class Stage {
 	}
 
 	populateHealth(healthList){
-		console.log("Health");
 		for(var i = 0 ; i < healthList.length; i++){
 			var health = healthList[i];
 			var healthPos =  new Pair(health.x, health.y);
@@ -181,7 +177,6 @@ export class Stage {
 	}
 
 	populateObstacle(obsList){
-		console.log("Obstacle");
 		for(var i = 0; i < obsList.length; i++){
 			var obs = obsList[i];
 			var obsPos = new Pair(obs.x, obs.y);
@@ -191,7 +186,7 @@ export class Stage {
 	}
 
 	populatePlayer(playerList){
-		console.log("Player");
+		var playerAlive = true;
 		for(var i = 0; i< playerList.length; i++){
 			if(playerList[i].name != this.user){
 				var otherPlayer = playerList[i];
@@ -201,7 +196,15 @@ export class Stage {
 				this.addActor(otherPlayerActor);
 			}
 			else{
+				// console.log('player found');
+				// console.log("New player health: ", playerList[i].playerHealth);
 				this.player.playerHealth = playerList[i].playerHealth;
+				if(this.player.playerHealth < 0){
+					playerAlive = false;
+					this.deadPlayer = this.player;
+					this.removePlayer();
+					break;
+				}
 				if(this.player.inventory['brick'] < playerList[i].brick){
 					console.log("Updated to", playerList[i].brick)
 					this.player.inventory['brick'] = playerList[i].brick;
@@ -213,7 +216,6 @@ export class Stage {
 	}
 
 	populateBullet(bulletList){
-		console.log("Bullet");
 		for(var i = 0; i < bulletList.length; i++){
 			var bullet = bulletList[i];
 			var bulletPos = new Pair(bullet.x, bullet.y);
@@ -318,6 +320,7 @@ export class Stage {
 				}
 
 				this.player.inventory["brick"] -= 1;
+				console.log('Bricks left: ', this.player.inventory['brick']);
 			}
 		}
 	}

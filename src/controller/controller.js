@@ -1,4 +1,5 @@
 import {Stage, Pair} from '../models/stage';
+import {setInventory} from '../App';
 
 var stage = null;
 var view = null;
@@ -30,7 +31,7 @@ function randint(n, min = 0){ return Math.round(Math.random()*(n - min) + min);}
 
 
 export function initSocket(){
-        console.log('initSocket called');
+        // console.log('initSocket called');
         console.log(window.location.hostname);
         // socket = new WebSocket(ws://{window.location.host});
         socket = new WebSocket(`ws://${window.location.hostname}:8005`);
@@ -45,10 +46,8 @@ export function initSocket(){
                 console.error('WEBSOCKET: ', event);
         }
         socket.onmessage = function (event) {
-                console.log('onmessage');
                 var recieved = event.data;
                 globalGameState = JSON.parse(recieved);
-                console.log(globalGameState);
                 if(stage != null){
                         stage.populateActors(globalGameState);
                 } 
@@ -78,12 +77,31 @@ export function setupGame(canvas){
         document.addEventListener('mouseup', placeBlock);
 }
 export function startGame(){
-        stage.step(); 
-        stage.draw();
+        if(stage.player == null){
+                clearInterval(webSocketInterval);
+                var removePlayer = {
+                        'removePlayer' : stage.deadPlayer
+                }
+                socket.send(JSON.stringify(removePlayer))
+                window.appComponent.showGameOver();
+                stopGame();
+                socket.close();
+        }
+        else{   
+                stage.step(); 
+                stage.draw();
+                window.appComponent.setInventory(stage.player.inventory);
+                gameID = requestAnimationFrame(startGame);
+        }
+        
         // debug();
-        gameID = requestAnimationFrame(startGame);
+        // gameID = requestAnimationFrame(startGame);
 }
 
+export function stopGame(){
+        console.log('stopGame called');
+        window.cancelAnimationFrame(gameID);
+}
 
 
 // function mouseMove(e) {

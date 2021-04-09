@@ -17,7 +17,7 @@ class GameView extends React.Component{
     render(){
         console.log('Gameview called');
         return(
-            <div>
+            <div onContextMenu={(e)=> e.preventDefault()}>
                 <canvas id="stage" width={800} height={800}></canvas>
             </div>
         );
