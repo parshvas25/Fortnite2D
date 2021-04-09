@@ -210,6 +210,13 @@ class Update extends React.Component {
                 &nbsp;
                 &nbsp;
                 &nbsp;
+                <Button onClick={this.props.delete} variant="contained" color="primary" fullWidth={true}>
+                    Delete Profile
+                </Button>
+                &nbsp;
+                &nbsp;
+                &nbsp;
+                &nbsp;
                 <Button onClick={this.props.back} variant="contained" color="primary" fullWidth={true}>
                     Back
                 </Button>

@@ -28,7 +28,7 @@ var socketSend = {};
 var dev;
 var mobile;
 // var url = `http://${window.location.hostname}:8000`;
-var url = `http://192.168.88.130:8000`;
+var url = `http://192.168.66.128:8000`;
 
 function randint(n, min = 0){ return Math.round(Math.random()*(n - min) + min);}
 
@@ -38,8 +38,8 @@ export function initSocket(){
         console.log(window.location.hostname);
         // socket = new WebSocket(ws://{window.location.host});
         // var url = `http://192.168.88.130:8000`;
-        socket = new WebSocket(`ws://192.168.88.130:8005`);
-        // socket = new WebSocket(`ws://${window.location.hostname}:8005`);
+        // socket = new WebSocket(`ws://192.168.88.130:8005`);
+        socket = new WebSocket(`ws://${window.location.hostname}:8005`);
         console.log("CLIENT: ", socket);
         socket.onopen = function (event) {
                 console.log("connected");
@@ -640,6 +640,22 @@ export async function userRegister(username, firstname, lastname, password, emai
         }
         
 }
+export async function fetchLeaderboard() {
+        const data = {
+                method: "POST",
+                body: JSON.stringify({})
+        }
+        console.log("am here");
+        const response = await fetch(url + "/api/leaderboard", data);
+        console.log(response);
+        const info = await response.json();
+        var l = [];
+        for(var i = 0; i < info.length; i++) {
+                l.push(info[i]);
+        }
+        console.log(l);
+        return l;
+}
 
 export async function changeScore(username, score) {
         const information = {
@@ -654,7 +670,6 @@ export async function changeScore(username, score) {
                       },
                 body: JSON.stringify(information)
         }
-        
         const response = await fetch(url + "/api/update", data);
         const info = await response.json();
         if("Success" in info) {
@@ -683,6 +698,24 @@ export async function updateProfile(username, firstname, lastname, password, ema
         }
 
         const response = await fetch(url + "/api/profile", data);
+        const info = await response.json();
+        return true;
+}
+
+export async function deleteUser(username) {
+        const information = {
+                username: username
+        }
+
+        const data = {
+                method: "POST",
+                headers: {
+                        'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(information)
+        }
+
+        const response = await fetch(url + "/api/delete", data);
         const info = await response.json();
         return true;
 }

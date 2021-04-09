@@ -538,6 +538,38 @@ app.use('/api/login', function (req, res) {
 	}
 });
 
+app.use('/api/delete', function(req, res) {
+
+	var uname = req.body.username;
+	
+	let sql = 'DELETE FROM ftduser WHERE username=$1';
+	pool.query(sql, [uname], (err, pgRes) => {
+		console.log(pgRes);
+		if(!err) {
+			let sql1 = 'DELETE FROM score where username=$1';
+			pool.query(sql1, [uname], (err, pgRes) => {
+				console.log(pgRes);
+				if(!err) {
+					res.status(200);
+					res.json({"message": "user deleted"});
+				}
+			})
+		}
+	})
+
+});
+
+app.use('/api/leaderboard', function(req, res) {
+	let sql = 'SELECT username, score FROM score ORDER BY score desc';
+	pool.query(sql, (err, pgRes) => {
+			res.status(200);
+			console.log("before");
+			res.json(pgRes.rows);
+			console.log("after");
+	})
+});
+
+
 
 
 
