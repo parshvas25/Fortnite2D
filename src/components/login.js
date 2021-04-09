@@ -54,24 +54,25 @@ class Login extends React.Component{
             <div className="title">
              <h1>Fortnite 2D</h1>
              <TextField
-             id="filled-full-width"
-             label="Username"
-             style={{margin:8}}
-             placeholder="Enter Username"
-             fullWidth={true}
-             onChange={this.updateUsername}
-             margin="normal"
-             variant="outlined"
+                id="filled-full-width"
+                label="Username"
+                style={{margin:8}}
+                placeholder="Enter Username"
+                fullWidth={true}
+                onChange={this.updateUsername}
+                margin="normal"
+                variant="outlined"
              />
              <TextField
-             id="filled-full-width"
-             label="Password"
-             style={{margin:8}}
-             placeholder="Enter Password"
-             fullWidth={true}
-             onChange={this.updatePassword}
-             margin="normal"
-             variant="outlined"
+                id="filled-full-width"
+                label="Password"
+                type='password'
+                style={{margin:8}}
+                placeholder="Enter Password"
+                fullWidth={true}
+                onChange={this.updatePassword}
+                margin="normal"
+                variant="outlined"
              />
              <h2>{this.props.error}</h2>
              <ThemeProvider theme = {theme}>

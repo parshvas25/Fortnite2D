@@ -28,6 +28,7 @@ var socketSend = {};
 var dev;
 var mobile;
 var url = `http://${window.location.hostname}:8000`;
+// var url = `http://192.168.88.130:8000`;
 function randint(n, min = 0){ return Math.round(Math.random()*(n - min) + min);}
 
 
