@@ -36,8 +36,10 @@ class App extends Component{
 			mobile: false,
 			leaderboard: null,
 			showLeaderboard: false,
+			user: '',
 		}
 		this.backToLogin = this.backToLogin.bind(this);
+		this.backToPause = this.backToPause.bind(this);
 		this.loginSuccess = this.showPause.bind(this);
 		this.toRegistration = this.showRegistration.bind(this);
 		this.registrationSuccess = this.showLogin.bind(this);
@@ -86,22 +88,35 @@ class App extends Component{
 		this.interval = setInterval(() => this.setState({score: this.state.score + 10}), 500);
 	}
 
+	// getName=()=>{
+	// 	return this.state.user;
+	// }
+
 	setInventory(newInventory) {
 		this.setState({
 			inventory: newInventory
 		})
 	}
 
-
 	componentWillUnmount() {
         clearInterval(this.intervalID);
     }
 
 	backToLogin(){
-		console.log('back called');
 		this.setState({
 			showLogin: true,
 			showPause: false,
+			showGame: false,
+			showUpdate: false, 
+			showRegistration : false,
+			showGameOver : false,
+		})
+	}
+
+	backToPause(){
+		this.setState({
+			showLogin: false,
+			showPause: true,
 			showGame: false,
 			showUpdate: false, 
 			showRegistration : false,
@@ -157,6 +172,7 @@ class App extends Component{
 			showUpdate: false, 
 			showRegistration : false,
 			showGameOver : false,
+			user: username,
 			error: "Registered Successfuly"
 		})
 		} else {
@@ -282,6 +298,7 @@ class App extends Component{
 				{this.state.showUpdate &&
 				<Update
 					updateProfile={this.updateProfile}
+					back={this.backToPause}
 					firstname={this.state.firstname}
 					lastname={this.state.lastname}
 					email={this.state.email}
