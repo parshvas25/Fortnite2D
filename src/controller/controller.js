@@ -31,11 +31,10 @@ function randint(n, min = 0){ return Math.round(Math.random()*(n - min) + min);}
 
 
 export function initSocket(){
-        console.log('initSocket called');
+        // console.log('initSocket called');
         console.log(window.location.hostname);
         socket = new WebSocket('ws://192.168.88.130:8005');
         // socket = new WebSocket(`ws://${window.location.hostname}:8005`);
-        console.log("CLIENT: ", socket);
         socket.onopen = function (event) {
                 console.log("connected");
         };
@@ -46,10 +45,8 @@ export function initSocket(){
                 console.error('WEBSOCKET: ', event);
         }
         socket.onmessage = function (event) {
-                console.log('onmessage');
                 var recieved = event.data;
                 globalGameState = JSON.parse(recieved);
-                console.log(globalGameState);
                 if(stage != null){
                         stage.populateActors(globalGameState);
                 } 

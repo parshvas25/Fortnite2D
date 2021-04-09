@@ -103,7 +103,6 @@ export class Stage {
 
 	populateActors(gamejson){
 		this.actors = [];
-		console.log('populate Actors called');
 		for(const [key, value] of Object.entries(gamejson)){
 			if(key == "gun"){
 				this.populateGuns(value)
@@ -197,8 +196,8 @@ export class Stage {
 				this.addActor(otherPlayerActor);
 			}
 			else{
-				console.log('player found');
-				console.log("New player health: ", playerList[i].playerHealth);
+				// console.log('player found');
+				// console.log("New player health: ", playerList[i].playerHealth);
 				this.player.playerHealth = playerList[i].playerHealth;
 				if(this.player.playerHealth < 0){
 					playerAlive = false;
@@ -321,6 +320,7 @@ export class Stage {
 				}
 
 				this.player.inventory["brick"] -= 1;
+				console.log('Bricks left: ', this.player.inventory['brick']);
 			}
 		}
 	}

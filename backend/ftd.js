@@ -212,6 +212,7 @@ wss.on('connection', function(ws) {
 				}
 			}
 			worldJson['player'] = worldPlayers;
+			gameState = JSON.stringify(worldJson);
 
 			if(!(Object.keys(gamejson['actions']['remove']).length === 0 && gamejson['actions']['remove'].constructor === Object)){
 				worldJson = removeActors(gamejson['actions'], worldJson);

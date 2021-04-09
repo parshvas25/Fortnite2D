@@ -28,11 +28,9 @@ class App extends Component{
 	}
 
 	setInventory(newInventory) {
-		console.log('setinventory triggered');
 		this.setState({
 			inventory: newInventory
 		})
-		console.log('Inventory is now: ', this.state.inventory);
 	}
 
 	showPause() {

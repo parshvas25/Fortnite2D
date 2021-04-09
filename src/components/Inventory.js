@@ -27,8 +27,6 @@ class Inventory extends React.Component{
             height: '100px',
         }
 
-        console.log('Props received: ', this.props.inventory);
-
         var gun = null;
         var brick = null;
         if(this.props.inventory != null){
@@ -49,10 +47,12 @@ class Inventory extends React.Component{
         return(
             <div style={{position: 'absolute', left: '0px', bottom: '0px'}}>
                 <table style={tableStyle}>
-					<tr style={tableStyle}>
-						<td style={tableDataStyle} id="gun">{gun}</td>
-						<td style={tableDataStyle} id="brick">{brick}</td>
-					</tr>
+                    <tbody>
+                        <tr style={tableStyle}>
+                            <td style={tableDataStyle} id="gun">{gun}</td>
+                            <td style={tableDataStyle} id="brick">{brick}</td>
+                        </tr>
+                    </tbody>
 				</table>
             </div>
         );
