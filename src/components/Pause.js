@@ -63,6 +63,7 @@ export default function Pause(props) {
                         <FormControlLabel
                         value="Computer"
                         control={<Radio color="primary" />}
+                        onChange = {() => props.switch(true)}
                         label="Computer"
                         labelPlacement="start"
                         />
@@ -70,6 +71,7 @@ export default function Pause(props) {
                         value="Mobile"
                         control={<Radio color="primary" />}
                         label="Mobile"
+                        onChange = {() => props.switch(false)}
                         labelPlacement="start"
                         />
                         </RadioGroup>

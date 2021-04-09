@@ -325,6 +325,35 @@ export class Stage {
 		}
 	}
 
+	placeBlockPhone(x, y) {
+		var rect = this.canvas.getBoundingClientRect();
+		if(this.player.inventory["brick"] > 0){
+			var xNew = x - rect.left;
+			var yNew = y - rect.top;
+			if(this.getActor(xNew, yNew) == null){
+				console.log("block placed");
+				// var placedObj = new Obstacle(this, new Pair(xNew, yNew), brickImg, 50, 50, 50);
+				// this.addActor(placedObj);
+
+				if("brick" in this.actions["shoot"]){
+					this.actions["shoot"]["brick"].push({
+						"xcoord" : xNew,
+						"ycoord" : yNew,
+					});
+				}
+				else{
+					this.actions["shoot"]["brick"] = [{
+						"xcoord" : xNew,
+						"ycoord" : yNew,
+					}];
+				}
+
+				this.player.inventory["brick"] -= 1;
+				console.log('Bricks left: ', this.player.inventory['brick']);
+			}
+		}
+	}
+
 	serialize(){
 		var game = {};
 		for(var i = 0; i < this.actors.length; i++){

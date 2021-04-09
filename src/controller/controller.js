@@ -26,6 +26,7 @@ var gameID;
 var actions = [];
 var socketSend = {};
 var dev;
+var mobile;
 var url = `http://${window.location.hostname}:8000`;
 function randint(n, min = 0){ return Math.round(Math.random()*(n - min) + min);}
 
@@ -75,6 +76,7 @@ export function setupGame(canvas){
         document.addEventListener('keyup', resetkey);
         document.addEventListener('click', shootBullet);
         document.addEventListener('mouseup', placeBlock);
+        document.addEventListener('dblclick', placeBlock);
 }
 export function startGame(){
         if(stage.player == null){
@@ -115,6 +117,12 @@ function placeBlock(e){
                 var cursorY = e.clientY;
                 stage.placeBlock(cursorX, cursorY);
         }
+}
+
+export function placeBlockMobile() {
+        var x = stage.getPlayer().x;
+        var y = stage.getPlayer().y;
+        stage.placeBlockPhone(x + 25, y + 25);
 }
 
 // function debug(){
@@ -350,51 +358,22 @@ function moveByKey(event){
 	
 }
 
-// function moveButton(value) {
-//         if(stage.getPlayer() != null) {
-//                 score = stage.player.score;
-//         }
+export function moveButton(value) {
+        if(stage.getPlayer() != null) {
+                score = stage.player.score;
+        }
 
-//         if(stage.getPlayer() != null && !stage.isWon()) {
-//                 var moveMap = { 
-//                         '1': new Pair(-shift, 0),
-//                         '2': new Pair(0, shift),
-//                         '3': new Pair(shift, 0),
-//                         '4': new Pair(0, -shift)
-//                 };
+        if(stage.getPlayer() != null && !stage.isWon()) {
+                var moveMap = { 
+                        '1': new Pair(-shift, 0),
+                        '2': new Pair(0, shift),
+                        '3': new Pair(shift, 0),
+                        '4': new Pair(0, -shift)
+                };
 
-//                 stage.player.velocity = moveMap[value];
-//         }       
-
-//         else if(stage.isWon()){
-//                 console.log("Won");
-//                 var key = event.key;
-//                 var restartMenu = {
-//                         'r': "restart"
-//                 }
-//                 if(key in restartMenu){
-//                         console.log("restart clicked");
-//                         setupGame('easy', 'black', 'mobile');
-//                         $("#game_won_mobile").hide();
-//                         $("#pause_menu").show();
-//                         playGame();
-//                 }
-//                 }
-//         else{
-//                 console.log("no player");
-//                 var key = event.key;
-//                 var restartMenu = {
-//                         'r': "restart"
-//                 }
-//                 if(key in restartMenu){
-//                         console.log("restart clicked");
-//                         setupGame('easy', 'black', 'mobile');
-//                         $("#game_over_mobile").hide();
-//                         $("#pause_menu").show();
-//                         playGame();
-//                 }
-//         }
-// }
+                stage.player.velocity = moveMap[value];
+        }       
+}
 
 function shootBullet(event) {
         if(stage.getPlayer() != null){
@@ -680,7 +659,11 @@ export async function changeScore(username, score) {
         
         const response = await fetch(url + "/api/update", data);
         const info = await response.json();
-        console.log(info);
+        if("Success" in info) {
+                return true;
+        }else {
+                return false;
+        }
 }
 
 export async function updateProfile(username, firstname, lastname, password, email, birthday) {

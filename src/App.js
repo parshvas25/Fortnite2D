@@ -6,10 +6,11 @@ import Registration from './components/registration';
 import OverlayComputer from './components/OverlayComputer';
 import GameView from './components/GameView';
 import Inventory from './components/Inventory';
-import {changeScore, initSocket, updateProfile, userLogin, userRegister} from './controller/controller';
+import {changeScore, initSocket, moveButton, placeBlockMobile, updateProfile, userLogin, userRegister} from './controller/controller';
 import Update from './components/update';
 import { lightGreen } from '@material-ui/core/colors';
 import GameOver from './components/GameOver';
+import OverlayMobile from './components/OverlayMobile';
 
 class App extends Component{
 	constructor(){
@@ -26,6 +27,7 @@ class App extends Component{
 			score: 0,
 			showGameOver : false,
 			inventory : null,
+			mobile: false
 		}
 		this.loginSuccess = this.showPause.bind(this);
 		this.toRegistration = this.showRegistration.bind(this);
@@ -33,6 +35,9 @@ class App extends Component{
 		this.playGame = this.showGame.bind(this);
 		this.update = this.showUpdate.bind(this);
 		this.updateProfile = this.profileUpdate.bind(this);
+		this.move = this.moveCharacter.bind(this);
+		this.block = this.placeBlockMobile.bind(this);
+		this.device = this.switchDevice.bind(this);
 		window.appComponent = this
 	}
 
@@ -86,9 +91,8 @@ class App extends Component{
 	}
 
 	async showLogin(username, firstname, lastname, password, email, birthday) {
-		console.log(username);
 		const response = await userRegister(username, firstname, lastname, password, email, birthday);
-		console.log(response);
+		if(response) {
 		this.setState({
 			showLogin: true,
 			showPause: false,
@@ -96,7 +100,19 @@ class App extends Component{
 			showUpdate: false, 
 			showRegistration : false,
 			showGameOver : false,
+			error: "Registered Successfuly"
 		})
+		} else {
+			this.setState({
+				showLogin: true,
+				showPause: false,
+				showGame: false,
+				showUpdate: false, 
+				showRegistration : false,
+				showGameOver : false,
+				error: "Username already taken"
+			})
+		}
 	}
 	
 	showGame(){
@@ -130,6 +146,22 @@ class App extends Component{
 			showRegistration : false,
 			showGameOver : true,
 		})
+	}
+
+	switchDevice(device) {
+		if(device) {
+			this.setState({mobile: false})
+		} else {
+			this.setState({mobile:true})
+		}
+	}
+
+	moveCharacter(direction) {
+		moveButton(direction);
+	}
+
+	placeBlockMobile() {
+		placeBlockMobile();
 	}
 
 	async updateScore(score, username) {
@@ -171,6 +203,7 @@ class App extends Component{
 				<Pause
 					toGame={this.playGame}
 					toUpdate={this.update}
+					switch={this.device}
 				/>
 				}
 				{this.state.showUpdate &&
@@ -178,9 +211,15 @@ class App extends Component{
 					updateProfile={this.updateProfile}
 				/>
 				}
-				{this.state.showGame && <OverlayComputer
-					highscore={this.state.highscore}/>}
+				{(this.state.showGame && this.state.mobile) && <OverlayMobile
+					highscore={this.state.highscore}
+					move={this.move}
+					block = {this.block}
+					/>}
 				
+				{(this.state.showGame && !this.state.mobile) && <OverlayComputer
+					highscore={this.state.highscore}
+					/>}
 
 				{this.state.showGame && <GameView/>}
 				{this.state.showGame && <Inventory inventory={this.state.inventory}/>}
