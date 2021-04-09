@@ -294,7 +294,7 @@ function moveByKey(event){
                 };
 
                 var pauseMenu = {
-                        'p': "paused",
+                        'q': "quit",
                 }
 
                 var restartMenu = {
@@ -309,19 +309,8 @@ function moveByKey(event){
                         }
                 }
                 else if(key in pauseMenu){
-                        if(stage.gameState == "play"){
-                                // stage.gameState = "paused";
-                                // $('#ui_play').hide();
-                                // $('ui_play_mobile').hide();
-                                // $("#pause_menu").show();
-                                // pauseGame();
-                        }
-                        else{
-                                // stage.gameState = "play";
-                                // $('#ui_play').show();
-                                // $("#pause_menu").hide();
-                                // startGame();
-                        }
+                        console.log('pause menu');
+                        window.appComponent.toggleQuitMenu();
                 }
                 else if(key in restartMenu){
                         if(stage.gameState == "paused"){

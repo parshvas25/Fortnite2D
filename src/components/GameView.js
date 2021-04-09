@@ -1,5 +1,5 @@
 import React from 'react';
-import {setupGame, startGame, send, newPlayer} from '../controller/controller';
+import {setupGame, startGame, send, newPlayer, initSocket} from '../controller/controller';
 
 class GameView extends React.Component{
     constructor(props){
@@ -15,7 +15,7 @@ class GameView extends React.Component{
     }
 
     render(){
-        console.log('Gameview called');
+        console.log('Gameview');
         return(
             <div onContextMenu={(e)=> e.preventDefault()}>
                 <canvas id="stage" width={800} height={800}></canvas>

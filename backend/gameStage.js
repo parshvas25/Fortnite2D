@@ -267,6 +267,7 @@ module.exports = class gameStage {
 	}
 
 	createBullet(x, y, gun, player){
+		console.log('Player ammo left: ', player.ammo);
 		var velocity = gun.bulletVelocity;
 		var damage = gun.damage;
 		var color = gun.bulletColor;
@@ -274,6 +275,7 @@ module.exports = class gameStage {
 		this.objectID += 1;
 		return bulletobj;
 	}
+
 	createEnemyBullet(x, y, dx,dy) {
 		var velocity = 5;
 		var damage = 10;
@@ -283,7 +285,8 @@ module.exports = class gameStage {
 		return bulletObj;
 	}
 
-	createObstacle(x, y){
+	createObstacle(x, y, player){
+		console.log('Player brick left: ', player.brick);
 		var obs = new Obstacle(this.getCurrIndex() + 1, new Pair(x, y), 50, 50, 50);
 		this.objectID += 1;
 		return obs;

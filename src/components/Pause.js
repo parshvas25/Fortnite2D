@@ -91,7 +91,7 @@ export default function Pause(props) {
 
                         <li>Right Click to Place Block on Computer, Block Button on Mobile</li>
 
-                        <li>Press P to Pause on Computer</li>
+                        <li>Press Q to Quit on Computer</li>
 
                         </Paper>
                     </Grid>

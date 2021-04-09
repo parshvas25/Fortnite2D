@@ -24,7 +24,6 @@ var count = 0;
 var clients = {};
 var gameObj = new Game();
 var gameState = gameObj.serialize();
-console.log(gameState);
 gameState = JSON.stringify(gameState);
 
 var playerAction = {};
@@ -221,14 +220,12 @@ function enemyShoot(playerObj, worldJson) {
 function moveEnemies(playerObj, worldJson) {
 	var enemyList = worldJson['enemy'];
 	var randomPlayer = playerObj[Math.floor(Math.random() * playerObj.length)];
-	console.log(randomPlayer);
 	for(var j = 0; j< enemyList.length; j++) {
 		var dX = randomPlayer.x - enemyList[j].x;
 		var dY = randomPlayer.y - enemyList[j].y;
 		var uX = dX / Math.sqrt(Math.pow(dX, 2) + Math.pow(dY, 2));
 		var uY = dY / Math.sqrt(Math.pow(dY, 2) + Math.pow(dX, 2));
 		if(enemyMovementCollision(worldJson, enemyList[j].x + uX, enemyList[j] + uY) != true) {
-			console.log("move closer");
 			enemyList[j].x += uX;
 			enemyList[j].y +=   uY;
 		} else {
@@ -244,7 +241,17 @@ function moveEnemies(playerObj, worldJson) {
 		}
 	}
 	return enemyList;
+}
 
+function updatePlayerBrick(playerName, playerList, game){
+	for(var i =0; i< playerList.length; i++){
+		if(playerList[i].name == playerName){
+			playerList[i].brick -= 1;
+			break;
+		}
+	}
+	game['player'] = playerList;
+	gameState = JSON.stringify(game);
 }
 
 var WebSocketServer = require('ws');
@@ -270,7 +277,7 @@ wss.on('connection', function(ws) {
 		var worldJson = JSON.parse(gameState);
 		if('addPlayer' in gamejson){
 			var newPlayer = gamejson['addPlayer'];
-			console.log("newplayer: ", newPlayer);
+			// console.log("newplayer: ", newPlayer);
 			ws.userName = newPlayer.name;
 			playerAction[newPlayer.name] = [];
 			if('player' in worldJson){
@@ -331,7 +338,9 @@ wss.on('connection', function(ws) {
 				for(var i = 0; i < gamejson['actions']['shoot']['brick'].length; i++){
 					var x = gamejson['actions']['shoot']['brick'][i].xcoord;
 					var y = gamejson['actions']['shoot']['brick'][i].ycoord;
-					var brickObj = gameObj.createObstacle(x, y).toJSON();
+					var currPlayer = gamejson['actions']['shoot']['brick'][i].player;
+					updatePlayerBrick(currPlayer.name, worldJson['player'], worldJson);
+					var brickObj = gameObj.createObstacle(x, y, currPlayer).toJSON();
 					if("obstacle" in worldJson){
 						worldJson["obstacle"].push(brickObj);
 					}

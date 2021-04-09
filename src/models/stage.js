@@ -209,7 +209,7 @@ export class Stage {
 					console.log("Updated to", playerList[i].brick)
 					this.player.inventory['brick'] = playerList[i].brick;
 				}
-				// this.player.getBrick(playerList[i].brick);
+				this.player.getBrick(playerList[i].brick);
 				this.addActor(this.player);
 			}
 		}	
@@ -308,18 +308,21 @@ export class Stage {
 
 				if("brick" in this.actions["shoot"]){
 					this.actions["shoot"]["brick"].push({
+						"player" : this.player,
 						"xcoord" : xNew,
 						"ycoord" : yNew,
 					});
 				}
 				else{
 					this.actions["shoot"]["brick"] = [{
+						"player" : this.player,
 						"xcoord" : xNew,
 						"ycoord" : yNew,
 					}];
 				}
 
-				this.player.inventory["brick"] -= 1;
+				// this.player.inventory["brick"] -= 1;
+				this.player.useBrick();
 				console.log('Bricks left: ', this.player.inventory['brick']);
 			}
 		}
@@ -337,18 +340,21 @@ export class Stage {
 
 				if("brick" in this.actions["shoot"]){
 					this.actions["shoot"]["brick"].push({
+						"player" : this.player,
 						"xcoord" : xNew,
 						"ycoord" : yNew,
 					});
 				}
 				else{
 					this.actions["shoot"]["brick"] = [{
+						"player" : this.player,
 						"xcoord" : xNew,
 						"ycoord" : yNew,
 					}];
 				}
 
-				this.player.inventory["brick"] -= 1;
+				// this.player.inventory["brick"] -= 1;
+				this.player.useBrick();
 				console.log('Bricks left: ', this.player.inventory['brick']);
 			}
 		}
@@ -457,12 +463,14 @@ export class Stage {
 			console.log("serializing brick");
 			if("brick" in game["shoot"]){
 				game["shoot"]["brick"].push({
+					'player': this.actions["shoot"]["brick"][i].player.toJSON(),
 					'xcoord': this.actions["shoot"]["brick"][i].xcoord,
 					'ycoord': this.actions["shoot"]["brick"][i].ycoord,
 				});
 			}
 			else {
 				game["shoot"]["brick"] = [{
+					'player': this.actions["shoot"]["brick"][i].player.toJSON(),
 					'xcoord': this.actions["shoot"]["brick"][i].xcoord,
 					'ycoord': this.actions["shoot"]["brick"][i].ycoord,
 				}];
@@ -893,6 +901,10 @@ class Player{
 
 	useAmmo(){
 		this.ammo -= 1;
+	}
+
+	useBrick(){
+		this.inventory['brick'] -= 1;
 	}
 
 	getInventory(){

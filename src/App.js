@@ -11,6 +11,7 @@ import Update from './components/update';
 import { lightGreen } from '@material-ui/core/colors';
 import GameOver from './components/GameOver';
 import OverlayMobile from './components/OverlayMobile';
+import Menu from './components/Menu';
 
 class App extends Component{
 	constructor(){
@@ -31,6 +32,7 @@ class App extends Component{
 			error: '',
 			score: 0,
 			showGameOver : false,
+			showMenu: false,
 			inventory : null,
 			mobile: false,
 			user: '',
@@ -47,6 +49,7 @@ class App extends Component{
 		this.block = this.placeBlockMobile.bind(this);
 		this.device = this.switchDevice.bind(this);
 		this.showGameOver = this.showGameOver.bind(this);
+		this.toggleQuitMenu = this.toggleQuitMenu.bind(this);
 		window.appComponent = this
 	}
 
@@ -57,6 +60,14 @@ class App extends Component{
 	// getName=()=>{
 	// 	return this.state.user;
 	// }
+
+	toggleQuitMenu(){
+		console.log('toggle called');
+		this.setState(prevState => ({
+			showMenu: !prevState.showMenu,
+		}));
+		console.log('Show Menu val: ', this.state.showMenu);
+	}
 
 	setInventory(newInventory) {
 		this.setState({
@@ -76,6 +87,7 @@ class App extends Component{
 			showUpdate: false, 
 			showRegistration : false,
 			showGameOver : false,
+			showMenu: false,
 		})
 	}
 
@@ -211,19 +223,17 @@ class App extends Component{
 	async profileUpdate(firstname, lastname, password, email, birthday) {
 		const response = await updateProfile(this.state.username, firstname, lastname, password, email, birthday);
 		if(response) {
-		this.setState({
-			showLogin: true,
-			showPause: false,
-			showGame: false,
-			showUpdate: false, 
-			showRegistration : false,
-			error: "Profile Updated Successfuly",
-		})
-	}
+			this.setState({
+				showLogin: true,
+				showPause: false,
+				showGame: false,
+				showUpdate: false, 
+				showRegistration : false,
+				error: "Profile Updated Successfuly",
+			})
+		}
 	}
 	
-
-
 	render(){
 		return (
 			<div>
@@ -271,6 +281,7 @@ class App extends Component{
 				{this.state.showGame && <GameView/>}
 				{this.state.showGame && <Inventory inventory={this.state.inventory}/>}
 				{this.state.showGameOver && <GameOver/>}
+				{this.state.showMenu && <Menu close={this.toggleQuitMenu} quit={this.backToLogin} />}
 			</div>
 		)
 	}
