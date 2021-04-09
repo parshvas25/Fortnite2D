@@ -24,6 +24,7 @@ var count = 0;
 var clients = {};
 var gameObj = new Game();
 var gameState = gameObj.serialize();
+console.log(gameState);
 gameState = JSON.stringify(gameState);
 
 var playerAction = {};
@@ -37,15 +38,20 @@ serverInterval=setInterval(function(){
 			bulletList[i].x = bulletList[i].x + bulletList[i].xvelocity;
 			bulletList[i].y = bulletList[i].y + bulletList[i].yvelocity;
 			// console.log(worldJson['player'][0]);
-			var hitPlayer = playerHit(worldJson, worldJson['player'], bulletList[i].x, bulletList[i].y, bulletList[i].damage, bulletList[i].id);
-			if(hitPlayer){
+			var hitEnemy = enemyHit(worldJson, worldJson['enemy'], bulletList[i].x, bulletList[i].y, bulletList[i].damage, bulletList[i].id);
+			if(hitEnemy){
 				collidedBulletIndex.push(i);
 			}
 			else{
-				var hitObstacle = obstacleHit(worldJson, worldJson['obstacle'], bulletList[i].x, bulletList[i].y, bulletList[i].damage, bulletList[i].id);
-				// console.log("Obstacle return", hitObstacle);
-				if(hitObstacle){
+				var hitPlayer = playerHit(worldJson, worldJson['player'], bulletList[i].x, bulletList[i].y, bulletList[i].damage, bulletList[i].id);
+				if(hitPlayer){
 					collidedBulletIndex.push(i);
+				}
+				else{
+					var hitObstacle = obstacleHit(worldJson, worldJson['obstacle'], bulletList[i].x, bulletList[i].y, bulletList[i].damage, bulletList[i].id);
+					if(hitObstacle){
+						collidedBulletIndex.push(i);
+					}
 				}
 			}
 		}
@@ -91,6 +97,30 @@ function getBricks(numBricks, id, worldJson){
 	worldJson['player'] = playerList;
 	gameState = JSON.stringify(worldJson);
 }
+
+function enemyHit(worldJson, enemyList, x, y, damage, id){
+	for(var i = 0; i < enemyList.length; i ++){
+		var enemy = enemyList[i];
+		if(((x > enemy.x - enemy.width && x < enemy.x + enemy.width) &&
+		(y > enemy.y - enemy.width && y < enemy.y + enemy.width)) || 
+		((x + 5 > enemy.x - enemy.width && x + 5 < enemy.x + enemy.width) && 
+		(y + 5 > enemy.y - enemy.width && y + 5 < enemy.y + enemy.width))) {
+			enemy.health -= damage;
+			enemyList[i] = enemy;
+
+			if(enemy.health < 0){
+				enemyList.splice(i, 1);
+			}
+
+			worldJson['enemy'] = enemyList;
+			gameState = JSON.stringify(worldJson);
+			return true;
+		}
+	}
+	return false;
+}
+
+
 
 function playerHit(worldJson, playerList, x, y, damage, id){
 	for(var i = 0; i < playerList.length; i ++){
@@ -238,9 +268,9 @@ wss.on('connection', function(ws) {
 		count +=1;
 		var gamejson = JSON.parse(game);
 		var worldJson = JSON.parse(gameState);
-		console.log(worldJson);
 		if('addPlayer' in gamejson){
 			var newPlayer = gamejson['addPlayer'];
+			console.log("newplayer: ", newPlayer);
 			ws.userName = newPlayer.name;
 			playerAction[newPlayer.name] = [];
 			if('player' in worldJson){
@@ -252,7 +282,6 @@ wss.on('connection', function(ws) {
 			gameState = JSON.stringify(worldJson);
 		}
 		else if('removePlayer' in gamejson){
-			console.log('player removed');
 			var remove = gamejson['removePlayer'];
 			var playerList = worldJson['player'];
 			for(var i = 0; i < playerList.length; i++){

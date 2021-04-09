@@ -607,7 +607,7 @@ export class Stage {
 			}
 		}
 	}
-} // End Class Stage
+} 
 
 export class Pair {
 	constructor(x,y){

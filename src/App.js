@@ -27,9 +27,11 @@ class App extends Component{
 			score: 0,
 			showGameOver : false,
 			inventory : null,
-			mobile: false
+			mobile: false,
+			user: '',
 		}
 		this.backToLogin = this.backToLogin.bind(this);
+		this.backToPause = this.backToPause.bind(this);
 		this.loginSuccess = this.showPause.bind(this);
 		this.toRegistration = this.showRegistration.bind(this);
 		this.registrationSuccess = this.showLogin.bind(this);
@@ -47,22 +49,35 @@ class App extends Component{
 		
 	}
 
+	// getName=()=>{
+	// 	return this.state.user;
+	// }
+
 	setInventory(newInventory) {
 		this.setState({
 			inventory: newInventory
 		})
 	}
 
-
 	componentWillUnmount() {
         clearInterval(this.interval);
     }
 
 	backToLogin(){
-		console.log('back called');
 		this.setState({
 			showLogin: true,
 			showPause: false,
+			showGame: false,
+			showUpdate: false, 
+			showRegistration : false,
+			showGameOver : false,
+		})
+	}
+
+	backToPause(){
+		this.setState({
+			showLogin: false,
+			showPause: true,
 			showGame: false,
 			showUpdate: false, 
 			showRegistration : false,
@@ -113,6 +128,7 @@ class App extends Component{
 			showUpdate: false, 
 			showRegistration : false,
 			showGameOver : false,
+			user: username,
 			error: "Registered Successfuly"
 		})
 		} else {
@@ -223,6 +239,7 @@ class App extends Component{
 				{this.state.showUpdate &&
 				<Update
 					updateProfile={this.updateProfile}
+					back={this.backToPause}
 				/>
 				}
 				{(this.state.showGame && this.state.mobile) && <OverlayMobile

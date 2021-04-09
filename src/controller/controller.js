@@ -27,8 +27,9 @@ var actions = [];
 var socketSend = {};
 var dev;
 var mobile;
-var url = `http://${window.location.hostname}:8000`;
-// var url = `http://192.168.88.130:8000`;
+// var url = `http://${window.location.hostname}:8000`;
+var url = `http://192.168.88.130:8000`;
+
 function randint(n, min = 0){ return Math.round(Math.random()*(n - min) + min);}
 
 
@@ -36,7 +37,9 @@ export function initSocket(){
         // console.log('initSocket called');
         console.log(window.location.hostname);
         // socket = new WebSocket(ws://{window.location.host});
-        socket = new WebSocket(`ws://${window.location.hostname}:8005`);
+        // var url = `http://192.168.88.130:8000`;
+        socket = new WebSocket(`ws://192.168.88.130:8005`);
+        // socket = new WebSocket(`ws://${window.location.hostname}:8005`);
         console.log("CLIENT: ", socket);
         socket.onopen = function (event) {
                 console.log("connected");
@@ -69,6 +72,7 @@ export function setupGame(canvas){
         var red = randint(255);
         var blue = randint(255);
         color = 'rgba(' + red + ',' + green + ',' + blue + ',1)'; 
+
         userName = Math.random().toString(36).substring(7);
         stage=new Stage(canvas, globalGameState, userName, color);
 

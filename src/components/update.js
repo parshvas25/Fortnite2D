@@ -206,6 +206,13 @@ class Update extends React.Component {
                 <Button onClick={this.checkRegistration} variant="contained" color="primary" fullWidth={true}>
                     Update Profile
                 </Button>
+                &nbsp;
+                &nbsp;
+                &nbsp;
+                &nbsp;
+                <Button onClick={this.props.back} variant="contained" color="primary" fullWidth={true}>
+                    Back
+                </Button>
             </ThemeProvider>
            </div>
 
