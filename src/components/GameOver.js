@@ -17,21 +17,6 @@ const theme = createMuiTheme({
     },
 });
 
-// export default function GameOver() {
-//     const classes = useStyles();
-//     return (
-//         <div className = {classes.back}>
-//              <h2>Game Over</h2>
-//              <ThemeProvider theme = {theme}>
-//                  <Button onClick={this.props.restart} variant="contained" color="primary" fullWidth={true}>
-//                     Back to Login
-//                  </Button>
-//              </ThemeProvider>
-//         </div>
-       
-//     )
-// }
-
 class GameOver extends React.Component{
     constructor(props){
         super(props);

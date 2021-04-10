@@ -27,7 +27,8 @@ var actions = [];
 var socketSend = {};
 var dev;
 var mobile;
-// var url = `http://${window.location.hostname}:8000`;
+
+//Change IP to relevant local IP address
 var url = `http://192.168.88.130:8000`;
 
 function randint(n, min = 0){ return Math.round(Math.random()*(n - min) + min);}
@@ -35,8 +36,8 @@ function randint(n, min = 0){ return Math.round(Math.random()*(n - min) + min);}
 export function initSocket(){
         console.log(window.location.hostname);
 
+        //Change IP to relevant local IP address
         socket = new WebSocket(`ws://192.168.88.130:8005`);
-        // socket = new WebSocket(`ws://${window.location.hostname}:8005`);
 
         console.log("CLIENT: ", socket);
         socket.onopen = function (event) {
@@ -61,11 +62,9 @@ export function initSocket(){
 
 export function getPlayerAmmo(){
         var ammo = 0;
-        console.log('getPlayerAmmo stage: ', stage);
         if(stage === null){
                 return ammo;
         }
-        console.log('why r u here');
         if(stage.player != null){
                 ammo = stage.player.ammo;
         }
