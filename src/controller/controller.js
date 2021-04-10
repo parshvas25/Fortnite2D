@@ -43,7 +43,7 @@ export function initSocket(){
                 console.log("connected");
         };
         socket.onclose = function (event) {
-                alert("closed code:" + event.code + " reason:" +event.reason + " wasClean:"+event.wasClean);
+                alert("Connection to server lost, please restart your browser.");
         };
         socket.onerror = function(event){
                 console.error('WEBSOCKET: ', event);

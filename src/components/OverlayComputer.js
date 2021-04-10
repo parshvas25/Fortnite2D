@@ -23,7 +23,7 @@ class OverlayComputer extends React.Component{
 
     render(){
         return(
-            <div style={{position: 'absolute', right: '0px', top: '0px'}}>
+            <div style={{position: 'absolute', right: '0px', top: '0px', backgroundColor: 'rgba(52, 52, 52, 0.5)', borderRadius: 50}}>
                 <p> Player Score: </p>
                 <p>{this.state.score}</p>
                 <p> Player High Score: </p>

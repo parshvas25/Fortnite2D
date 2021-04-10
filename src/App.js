@@ -358,7 +358,7 @@ class App extends Component{
 
 				{this.state.showGame && <GameView/>}
 				{this.state.showGame && <Inventory inventory={this.state.inventory}/>}
-				{this.state.showGameOver && <GameOver/>}
+				{this.state.showGameOver && <GameOver restart={this.backToLogin}/>}
 				{this.state.showMenu && <Menu close={this.toggleQuitMenu} quit={this.backToLogin} />}
 				{this.state.showLeaderboard && <Leaderboard
 					leaderboard={this.state.leaderboard}
