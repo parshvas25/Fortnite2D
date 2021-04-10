@@ -32,7 +32,6 @@ var url = `http://192.168.88.130:8000`;
 
 function randint(n, min = 0){ return Math.round(Math.random()*(n - min) + min);}
 
-
 export function initSocket(){
         console.log(window.location.hostname);
 
@@ -73,8 +72,8 @@ export function setupGame(canvas){
         color = 'rgba(' + red + ',' + green + ',' + blue + ',1)'; 
 
         userName = Math.random().toString(36).substring(7);
-        stage=new Stage(canvas, globalGameState, userName, color);
 
+        stage=new Stage(canvas, globalGameState, userName, color);
 
 	document.addEventListener("keydown", moveByKey);
         document.addEventListener('keyup', resetkey);
@@ -85,13 +84,16 @@ export function setupGame(canvas){
 export function startGame(){
         if(stage.player == null){
                 clearInterval(webSocketInterval);
+                webSocketInterval = null;
                 var removePlayer = {
                         'removePlayer' : stage.deadPlayer
                 }
                 socket.send(JSON.stringify(removePlayer))
                 window.appComponent.showGameOver();
                 stopGame();
+                console.log('socket before closing', socket);
                 socket.close();
+                console.log('socket after closing', socket);
         }
         else{   
                 stage.step(); 

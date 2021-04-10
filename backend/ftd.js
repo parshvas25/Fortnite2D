@@ -158,7 +158,6 @@ function obstacleHit(worldJson, obsList, x, y, damage, id){
 					obstacle.health -= damage;
 					obsList[i] = obstacle;
 					if(obstacle.health < 0){
-						// console.log('obstacle destroyed');
 						var numBricksGained = Math.ceil((obstacle.height * obstacle.width)/5000);
 						getBricks(numBricksGained, id, worldJson);
 						obsList.splice(i, 1);
