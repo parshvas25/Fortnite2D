@@ -48,12 +48,14 @@ export function initSocket(){
         socket.onerror = function(event){
                 console.error('WEBSOCKET: ', event);
         }
-        socket.onmessage = function (event) {
-                var recieved = event.data;
-                globalGameState = JSON.parse(recieved);
-                if(stage != null){
-                        stage.populateActors(globalGameState);
-                } 
+        if(socket.readyState == 0 || socket.readyState == 1){
+                socket.onmessage = function (event) {
+                        var recieved = event.data;
+                        globalGameState = JSON.parse(recieved);
+                        if(stage != null){
+                                stage.populateActors(globalGameState);
+                        } 
+                }
         }
 }
 
@@ -580,12 +582,14 @@ export function newPlayer(){
 
 export function send(){
         webSocketInterval=setInterval(function(){
-                socketSend = {
-                        'player' : stage.player.toJSON(),
-                        'actions' : stage.getActions()
+                if(stage.player != null){
+                        socketSend = {
+                                'player' : stage.player.toJSON(),
+                                'actions' : stage.getActions()
+                        }
+                        socket.send(JSON.stringify(socketSend));
+                        stage.clearActions();
                 }
-                socket.send(JSON.stringify(socketSend));
-                stage.clearActions();
         },20);
 }
 

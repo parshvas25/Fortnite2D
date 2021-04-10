@@ -227,7 +227,7 @@ class App extends Component{
 			showLogin: false,
 			showPause: false,
 			showGame: false,
-			showUpdate: true,
+			showUpdate: false,
 			showRegistration : false,
 			showRegistration : false,
 			showGameOver : true,
