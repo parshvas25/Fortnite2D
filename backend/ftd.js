@@ -337,9 +337,10 @@ wss.on('connection', function(ws) {
 				for(var i = 0; i < gamejson['actions']['shoot']['brick'].length; i++){
 					var x = gamejson['actions']['shoot']['brick'][i].xcoord;
 					var y = gamejson['actions']['shoot']['brick'][i].ycoord;
-					var currPlayer = gamejson['actions']['shoot']['brick'][i].player;
-					updatePlayerBrick(currPlayer.name, worldJson['player'], worldJson);
-					var brickObj = gameObj.createObstacle(x, y, currPlayer).toJSON();
+					// var currPlayer = gamejson['actions']['shoot']['brick'][i].player;
+					// updatePlayerBrick(currPlayer.name, worldJson['player'], worldJson);
+					// var brickObj = gameObj.createObstacle(x, y, currPlayer).toJSON();
+					var brickObj = gameObj.createObstacle(x, y).toJSON();
 					if("obstacle" in worldJson){
 						worldJson["obstacle"].push(brickObj);
 					}

@@ -6,7 +6,21 @@ import Registration from './components/registration';
 import OverlayComputer from './components/OverlayComputer';
 import GameView from './components/GameView';
 import Inventory from './components/Inventory';
-import {changeScore, deleteUser, fetchLeaderboard, initSocket, moveButton, placeBlockMobile, updateProfile, userLogin, userRegister} from './controller/controller';
+import {
+	changeScore, 
+	deleteUser, 
+	fetchLeaderboard, 
+	initSocket, 
+	moveButton, 
+	placeBlockMobile, 
+	updateProfile, 
+	userLogin, 
+	userRegister,
+	getPlayerAmmo,
+	getPlayerBricks,
+	getPlayerHealth
+} 
+from './controller/controller';
 import Update from './components/update';
 import { lightGreen } from '@material-ui/core/colors';
 import GameOver from './components/GameOver';
@@ -39,6 +53,9 @@ class App extends Component{
 			leaderboard: null,
 			showLeaderboard: false,
 			user: '',
+			ammo: 0,
+			bricks: 0,
+			health: 0,
 		}
 		this.backToLogin = this.backToLogin.bind(this);
 		this.backToPause = this.backToPause.bind(this);
@@ -88,7 +105,13 @@ class App extends Component{
 	}
 
 	componentDidMount() {
-		this.interval = setInterval(() => this.setState({score: this.state.score + 10}), 500);
+		this.interval = setInterval(() => this.setState({
+			score: this.state.score + 1,
+			ammo: getPlayerAmmo(),
+			health: getPlayerHealth(),
+			bricks: getPlayerBricks()
+		}), 
+			500);
 	}
 
 	// getName=()=>{
@@ -321,11 +344,17 @@ class App extends Component{
 					highscore={this.state.highscore}
 					move={this.move}
 					block = {this.block}
+					ammo={this.state.ammo}
+					bricks={this.state.bricks}
+					health={this.state.health}
 					/>}
 				
 				{(this.state.showGame && !this.state.mobile) && <OverlayComputer
 					highscore={this.state.highscore}
-					/>}
+					ammo={this.state.ammo}
+					bricks={this.state.bricks}
+					health={this.state.health}
+				/>}
 
 				{this.state.showGame && <GameView/>}
 				{this.state.showGame && <Inventory inventory={this.state.inventory}/>}

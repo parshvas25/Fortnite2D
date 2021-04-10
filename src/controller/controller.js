@@ -59,6 +59,42 @@ export function initSocket(){
         }
 }
 
+export function getPlayerAmmo(){
+        var ammo = 0;
+        console.log('getPlayerAmmo stage: ', stage);
+        if(stage === null){
+                return ammo;
+        }
+        console.log('why r u here');
+        if(stage.player != null){
+                ammo = stage.player.ammo;
+        }
+        return ammo;
+}
+
+export function getPlayerHealth(){
+        var health = 0;
+        if(stage === null){
+                return health;
+        }
+        if(stage.player != null){
+                health = stage.player.playerHealth;
+        }
+        return health;
+}
+
+export function getPlayerBricks(){
+        var bricks = 0;
+        if(stage === null){
+                return bricks;
+        }
+        if(stage.player != null){
+                bricks = stage.player.inventory['brick'];
+        }
+        return bricks;
+}
+
+
 // export function setupGame(difficulty, color, device){
 export function setupGame(canvas){
         // if(device == "computer") {

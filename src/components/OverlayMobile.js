@@ -29,6 +29,12 @@ class OverlayMobile extends React.Component{
                 <p>{this.state.score}</p>
                 <p> Player High Score </p>
                 <p>{this.state.highscore}</p>
+                <p>Num Bricks: </p>
+                <p>{this.props.bricks}</p>
+                <p>Ammo: </p>
+                <p>{this.props.ammo}</p>
+                <p>Health: </p>
+                <p>{this.props.health}</p>
             </div>
             <div style={{position: 'absolute', left: '25px', bottom: '300px', width: '200px'}}>
             <Button onClick={() => this.props.block()} variant="contained">Place Block</Button>

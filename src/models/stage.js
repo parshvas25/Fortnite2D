@@ -205,11 +205,11 @@ export class Stage {
 					this.removePlayer();
 					break;
 				}
-				if(this.player.inventory['brick'] < playerList[i].brick){
-					console.log("Updated to", playerList[i].brick)
-					this.player.inventory['brick'] = playerList[i].brick;
-				}
-				this.player.getBrick(playerList[i].brick);
+				// if(this.player.inventory['brick'] < playerList[i].brick){
+				// 	console.log("Updated to", playerList[i].brick)
+				// 	this.player.inventory['brick'] = playerList[i].brick;
+				// }
+				// this.player.getBrick(playerList[i].brick);
 				this.addActor(this.player);
 			}
 		}	
@@ -308,14 +308,14 @@ export class Stage {
 
 				if("brick" in this.actions["shoot"]){
 					this.actions["shoot"]["brick"].push({
-						"player" : this.player,
+						// "player" : this.player,
 						"xcoord" : xNew,
 						"ycoord" : yNew,
 					});
 				}
 				else{
 					this.actions["shoot"]["brick"] = [{
-						"player" : this.player,
+						// "player" : this.player,
 						"xcoord" : xNew,
 						"ycoord" : yNew,
 					}];
@@ -340,14 +340,14 @@ export class Stage {
 
 				if("brick" in this.actions["shoot"]){
 					this.actions["shoot"]["brick"].push({
-						"player" : this.player,
+						// "player" : this.player,
 						"xcoord" : xNew,
 						"ycoord" : yNew,
 					});
 				}
 				else{
 					this.actions["shoot"]["brick"] = [{
-						"player" : this.player,
+						// "player" : this.player,
 						"xcoord" : xNew,
 						"ycoord" : yNew,
 					}];
@@ -500,10 +500,6 @@ export class Stage {
 	}
 
 	draw(){
-		// console.log("Actors: ")
-		// for(var i = 0; i < this.actors.length ; i++){
-		// 	console.log(this.actors[i]);
-		// }
 		if(this.player != null){
 			var context = this.canvas.getContext("2d");
 			context.setTransform(1,0,0,1,0,0);

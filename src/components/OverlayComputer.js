@@ -7,8 +7,6 @@ class OverlayComputer extends React.Component{
         super(props);
         this.state = {
             highscore: this.props.highscore,
-            bricks: this.props.bricks,
-            ammo: this.props.ammo,
             score: 0
         }
         console.log(this.state.highscore);
@@ -31,9 +29,11 @@ class OverlayComputer extends React.Component{
                 <p> Player High Score: </p>
                 <p>{this.state.highscore}</p>
                 <p>Num Bricks: </p>
-                <p>{this.state.bricks}</p>
+                <p>{this.props.bricks}</p>
                 <p>Ammo: </p>
-                <p>{this.state.ammo}</p>
+                <p>{this.props.ammo}</p>
+                <p>Health: </p>
+                <p>{this.props.health}</p>
             </div>
         );
     }

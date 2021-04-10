@@ -285,8 +285,14 @@ module.exports = class gameStage {
 		return bulletObj;
 	}
 
-	createObstacle(x, y, player){
-		console.log('Player brick left: ', player.brick);
+	// createObstacle(x, y, player){
+	// 	console.log('Player brick left: ', player.brick);
+	// 	var obs = new Obstacle(this.getCurrIndex() + 1, new Pair(x, y), 50, 50, 50);
+	// 	this.objectID += 1;
+	// 	return obs;
+	// }
+
+	createObstacle(x, y){
 		var obs = new Obstacle(this.getCurrIndex() + 1, new Pair(x, y), 50, 50, 50);
 		this.objectID += 1;
 		return obs;
